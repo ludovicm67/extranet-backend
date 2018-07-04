@@ -15,6 +15,11 @@ $app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')
 );
 
+// load all required configuration for multi domain support
+\ludovicm67\Laravel\Multidomain\Configuration::getInstance(
+    base_path('config.yml')
+);
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

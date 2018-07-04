@@ -1,0 +1,16 @@
+fallback_url: http://localhost/
+supported_domains:
+  localhost:
+    site_name: Gestion
+    email_from: noreply@example.com
+    https: false
+    database:
+      hostname: localhost
+      username: root
+      password:
+      database:
+    sellsy:
+      access_token:
+      access_token_secret:
+      consumer_token:
+      consumer_token_secret:

@@ -1,5 +1,16 @@
 <?php
 
+use \ludovicm67\Laravel\Multidomain\Configuration;
+
+$config = Configuration::getInstance();
+$domainConf = $config->getDomain();
+$appName = 'Gestion';
+
+if (!is_null($domainConf) && !is_null($domainConf->get('site_name'))) {
+    $appName = $domainConf->get('site_name');
+}
+
+
 return [
 
     /*
@@ -13,7 +24,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => $appName,
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +89,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
