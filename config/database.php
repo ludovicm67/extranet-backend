@@ -22,6 +22,10 @@ $config = Configuration::getInstance();
 $globalConf = $config->get();
 $domainConf = $config->getDomain();
 $databaseConfiguration['connections'] = []; // empty array
+$databaseConfiguration['connections']['mysql'] = [
+  'driver' => 'mysql',
+  'database' => ''
+]; // default to prevent some errors
 
 // add default database connection if we have a domain
 if (!is_null($domainConf)) {
