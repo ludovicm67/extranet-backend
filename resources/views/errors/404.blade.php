@@ -1,5 +1,5 @@
-{!! json_encode([
+@json([
   'success' => false,
   'code' => 404,
-  'message' => 'Service action not found']
-) !!}
+  'message' => 'service action not found'
+])

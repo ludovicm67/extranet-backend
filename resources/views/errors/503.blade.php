@@ -1,5 +1,5 @@
-{!! json_encode([
+@json([
   'success' => false,
   'code' => 503,
-  'message' => 'Service currently in maintenance']
-) !!}
+  'message' => 'Service currently in maintenance'
+])
