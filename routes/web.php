@@ -22,6 +22,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 Route::model('client', \App\SellsyClient::class);
 Route::model('sellsy_client', \App\SellsyClient::class);
 Route::apiResources([
+  'users' => 'UserController',
   'roles' => 'RoleController',
   'clients' => 'SellsyClientController',
   'sellsy_clients' => 'SellsyClientController',
