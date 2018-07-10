@@ -11,14 +11,21 @@ Route::post('auth/login', 'AuthController@login');
 Route::post('auth/recover', 'AuthController@recover');
 Route::group(['middleware' => ['jwt.auth']], function() {
 
-  Route::resource('roles', 'RoleController');
 
   Route::get('users/me', 'AuthController@me');
   Route::get('auth/logout', 'AuthController@logout');
   Route::get('test', function(){
-    return response()->json(['foo'=>'bar']);
+    return response()->json(['foo' => 'bar']);
   });
 });
 
-Route::resource('clients', 'SellsyClientController');
-
+Route::model('client', \App\SellsyClient::class);
+Route::model('sellsy_client', \App\SellsyClient::class);
+Route::apiResources([
+  'roles' => 'RoleController',
+  'clients' => 'SellsyClientController',
+  'sellsy_clients' => 'SellsyClientController',
+  'sellsy_contacts' => 'SellsyContactController',
+  'sellsy_orders' => 'SellsyOrderController',
+  'sellsy_invoices' => 'SellsyInvoiceController',
+]);

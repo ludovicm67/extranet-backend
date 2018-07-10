@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\SellsyClient;
+use App\SellsyInvoice;
 use Illuminate\Http\Request;
 
-class SellsyClientController extends Controller
+class SellsyInvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class SellsyClientController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => SellsyClient::all(),
+        'data' => SellsyInvoice::all(),
       ]);
     }
 
@@ -34,14 +34,14 @@ class SellsyClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SellsyClient  $sellsySellsyClient
+     * @param  \App\SellsyInvoice  $sellsyInvoice
      * @return \Illuminate\Http\Response
      */
-    public function show(SellsyClient $sellsySellsyClient)
+    public function show(SellsyInvoice $sellsyInvoice)
     {
       return response()->json([
         'success' => true,
-        'data' => $sellsySellsyClient
+        'data' => $sellsyInvoice,
       ]);
     }
 
@@ -49,10 +49,10 @@ class SellsyClientController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SellsyClient  $sellsySellsyClient
+     * @param  \App\SellsyInvoice  $sellsyInvoice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SellsyClient $sellsySellsyClient)
+    public function update(Request $request, SellsyInvoice $sellsyInvoice)
     {
         //
     }
@@ -60,10 +60,10 @@ class SellsyClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SellsyClient  $sellsySellsyClient
+     * @param  \App\SellsyInvoice  $sellsyInvoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SellsyClient $sellsySellsyClient)
+    public function destroy(SellsyInvoice $sellsyInvoice)
     {
         //
     }

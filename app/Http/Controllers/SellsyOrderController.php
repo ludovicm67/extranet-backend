@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\SellsyClient;
+use App\SellsyOrder;
 use Illuminate\Http\Request;
 
-class SellsyClientController extends Controller
+class SellsyOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class SellsyClientController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => SellsyClient::all(),
+        'data' => SellsyOrder::all(),
       ]);
     }
 
@@ -34,14 +34,14 @@ class SellsyClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SellsyClient  $sellsySellsyClient
+     * @param  \App\SellsyOrder  $sellsyOrder
      * @return \Illuminate\Http\Response
      */
-    public function show(SellsyClient $sellsySellsyClient)
+    public function show(SellsyOrder $sellsyOrder)
     {
       return response()->json([
         'success' => true,
-        'data' => $sellsySellsyClient
+        'data' => $sellsyOrder,
       ]);
     }
 
@@ -49,10 +49,10 @@ class SellsyClientController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SellsyClient  $sellsySellsyClient
+     * @param  \App\SellsyOrder  $sellsyOrder
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SellsyClient $sellsySellsyClient)
+    public function update(Request $request, SellsyOrder $sellsyOrder)
     {
         //
     }
@@ -60,10 +60,10 @@ class SellsyClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SellsyClient  $sellsySellsyClient
+     * @param  \App\SellsyOrder  $sellsyOrder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SellsyClient $sellsySellsyClient)
+    public function destroy(SellsyOrder $sellsyOrder)
     {
         //
     }
