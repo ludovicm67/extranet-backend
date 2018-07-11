@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
 
 class FirstUserSeeder extends Seeder
@@ -11,7 +12,7 @@ class FirstUserSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('users')->insert([
+      User::create([
         'firstname' => 'Admin',
         'lastname' => 'Remove me please !',
         'email' => 'admin@example.com',
