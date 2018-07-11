@@ -28,7 +28,7 @@ class SellsyOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      abort(404);
     }
 
     /**
@@ -54,7 +54,7 @@ class SellsyOrderController extends Controller
      */
     public function update(Request $request, SellsyOrder $sellsyOrder)
     {
-        //
+      abort(404);
     }
 
     /**
@@ -65,6 +65,6 @@ class SellsyOrderController extends Controller
      */
     public function destroy(SellsyOrder $sellsyOrder)
     {
-        //
+      abort(404);
     }
 }

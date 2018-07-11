@@ -28,7 +28,7 @@ class SellsyContactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      abort(404);
     }
 
     /**
@@ -54,7 +54,7 @@ class SellsyContactController extends Controller
      */
     public function update(Request $request, SellsyContact $sellsyContact)
     {
-        //
+      abort(404);
     }
 
     /**
@@ -65,6 +65,6 @@ class SellsyContactController extends Controller
      */
     public function destroy(SellsyContact $sellsyContact)
     {
-        //
+      abort(404);
     }
 }

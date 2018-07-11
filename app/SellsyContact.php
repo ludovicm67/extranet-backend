@@ -26,4 +26,8 @@ class SellsyContact extends Model
     'formatted_fax',
     'formatted_birthdate',
   ];
+
+  protected $hidden = [
+    'birthdate', 'formatted_birthdate', 'pic'
+  ];
 }

@@ -28,7 +28,7 @@ class SellsyInvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      abort(404);
     }
 
     /**
@@ -54,7 +54,7 @@ class SellsyInvoiceController extends Controller
      */
     public function update(Request $request, SellsyInvoice $sellsyInvoice)
     {
-        //
+      abort(404);
     }
 
     /**
@@ -65,6 +65,6 @@ class SellsyInvoiceController extends Controller
      */
     public function destroy(SellsyInvoice $sellsyInvoice)
     {
-        //
+      abort(404);
     }
 }

@@ -28,7 +28,7 @@ class SellsyClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      abort(404);
     }
 
     /**
@@ -54,7 +54,7 @@ class SellsyClientController extends Controller
      */
     public function update(Request $request, SellsyClient $sellsySellsyClient)
     {
-        //
+      abort(404);
     }
 
     /**
@@ -65,6 +65,6 @@ class SellsyClientController extends Controller
      */
     public function destroy(SellsyClient $sellsySellsyClient)
     {
-        //
+      abort(404);
     }
 }
