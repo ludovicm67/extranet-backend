@@ -1,7 +1,7 @@
 fallback_url: http://localhost/
 supported_domains:
   localhost:
-    site_name: Gestion
+    site_name: Extranet
     email_from: noreply@example.com
     https: false
     database:
@@ -14,3 +14,5 @@ supported_domains:
       access_token_secret:
       consumer_token:
       consumer_token_secret:
+    pay:
+      password:
