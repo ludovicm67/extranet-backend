@@ -65,6 +65,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+      if (auth()->user()->id != $user->id) {
+        $user->delete();
+
+        return response()->json([
+          'success' => true,
+        ]);
+      }
+
+      return response()->json([
+        'success' => false,
+        'message' => 'you cannot delete yourself!',
+      ], 403);
     }
 }
