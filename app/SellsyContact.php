@@ -30,4 +30,8 @@ class SellsyContact extends Model
   protected $hidden = [
     'birthdate', 'formatted_birthdate', 'pic'
   ];
+
+  public function client() {
+    return $this->belongsTo(SellsyClient::class, 'thirdid', 'sellsy_id');
+  }
 }

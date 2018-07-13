@@ -111,4 +111,8 @@ class SellsyClient extends Model
     'siren',
     'vat',
   ];
+
+  public function contacts() {
+    return $this->hasMany(SellsyContact::class, 'thirdid', 'sellsy_id');
+  }
 }

@@ -41,7 +41,7 @@ class SellsyContactController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => $sellsyContact,
+        'data' => $sellsyContact->fresh(['client']),
       ]);
     }
 
