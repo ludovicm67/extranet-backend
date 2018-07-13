@@ -115,4 +115,8 @@ class SellsyClient extends Model
   public function contacts() {
     return $this->hasMany(SellsyContact::class, 'thirdid', 'sellsy_id');
   }
+
+  public function orders() {
+    return $this->hasMany(SellsyOrder::class, 'thirdid', 'sellsy_id');
+  }
 }

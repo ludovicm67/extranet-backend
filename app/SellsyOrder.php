@@ -156,4 +156,34 @@ class SellsyOrder extends Model
     'weightFormattedDisplayed',
     'thirdStatus',
   ];
+
+  protected $hidden = [
+    'step_css',
+    'step_banner',
+    'step_id',
+    'doctypestep_color',
+    'doctypestep_hex',
+    'doctypestep_label',
+    'doctypestep_css',
+    'doctypestep_id',
+    'ship_addr_name',
+    'ship_addr_part1',
+    'ship_addr_part2',
+    'ship_addr_part3',
+    'ship_addr_part4',
+    'ship_addr_zip',
+    'ship_addr_town',
+    'ship_addr_countrycode',
+    'showSignAndStamp',
+    'currencyid',
+    'currencyposition',
+    'numberformat',
+    'numberdecimals',
+    'numberthousands',
+    'numberprecision',
+  ];
+
+  public function client() {
+    return $this->belongsTo(SellsyClient::class, 'thirdid', 'sellsy_id');
+  }
 }
