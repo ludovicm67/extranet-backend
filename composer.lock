@@ -1337,7 +1337,7 @@
         },
         {
             "name": "ludovicm67/laravel-multidomain",
-            "version": "v1.0.4",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ludovicm67/php-laravel-multidomain.git",
