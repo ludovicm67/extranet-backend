@@ -57,6 +57,17 @@ class UserController extends Controller
         //
     }
 
+    public function updateMe(Request $request) {
+      $user = auth()->user();
+      $user->lastname = e($request->lastname);
+      $user->save();
+
+      return response()->json([
+        'success' => true,
+        'data' => $user,
+      ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
