@@ -183,6 +183,14 @@ class SellsyOrder extends Model
     'numberprecision',
   ];
 
+  protected $with = [
+    'invoices',
+  ];
+
+  public function invoices() {
+    return $this->hasMany(SellsyInvoice::class, 'parentid', 'sellsy_id');
+  }
+
   public function client() {
     return $this->belongsTo(SellsyClient::class, 'thirdid', 'sellsy_id');
   }

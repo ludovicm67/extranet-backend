@@ -119,4 +119,12 @@ class SellsyClient extends Model
   public function orders() {
     return $this->hasMany(SellsyOrder::class, 'thirdid', 'sellsy_id');
   }
+
+  public function subscriptions() {
+    return $this
+      ->hasMany(SellsyInvoice::class, 'thirdid', 'sellsy_id')
+      ->leftJoin('sellsy_orders', 'sellsy_invoices.parentid', '=', 'sellsy_orders.sellsy_id')
+      ->select(['sellsy_invoices.*', 'sellsy_orders.id AS order_id'])
+      ->whereNull('sellsy_orders.id');
+  }
 }
