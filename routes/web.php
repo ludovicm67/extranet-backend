@@ -10,6 +10,7 @@ Route::get('cron/sellsy_invoices', 'CronController@sellsy_invoices');
 Route::post('auth/login', 'AuthController@login');
 // Route::post('auth/recover', 'AuthController@recover');
 Route::group(['middleware' => ['jwt.auth']], function() {
+  Route::get('users/me', 'AuthController@me');
 
   Route::model('client', \App\SellsyClient::class);
   Route::model('sellsy_client', \App\SellsyClient::class);
@@ -23,7 +24,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     'sellsy_invoices' => 'SellsyInvoiceController',
   ]);
 
-  Route::get('users/me', 'AuthController@me');
   Route::get('auth/logout', 'AuthController@logout');
   Route::get('test', function(){
     return response()->json(['foo' => 'bar']);

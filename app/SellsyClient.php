@@ -117,7 +117,9 @@ class SellsyClient extends Model
   }
 
   public function orders() {
-    return $this->hasMany(SellsyOrder::class, 'thirdid', 'sellsy_id');
+    return $this
+      ->hasMany(SellsyOrder::class, 'thirdid', 'sellsy_id')
+      ->orderBy('displayedDate', 'desc');
   }
 
   public function subscriptions() {
@@ -125,6 +127,7 @@ class SellsyClient extends Model
       ->hasMany(SellsyInvoice::class, 'thirdid', 'sellsy_id')
       ->leftJoin('sellsy_orders', 'sellsy_invoices.parentid', '=', 'sellsy_orders.sellsy_id')
       ->select(['sellsy_invoices.*', 'sellsy_orders.id AS order_id'])
-      ->whereNull('sellsy_orders.id');
+      ->whereNull('sellsy_orders.id')
+      ->orderBy('displayedDate', 'desc');
   }
 }
