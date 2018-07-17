@@ -15,7 +15,18 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
+            $table->string('domain')->nullable();
+            $table->unsignedInteger('client_id')->nullable();
+            $table->text('next_action')->nullable();
+            $table->dateTime('end_at')->nullable();
             $table->timestamps();
+
+            $table
+              ->foreign('client_id')
+              ->references('id')
+              ->on('sellsy_clients')
+              ->onDelete('cascade');
         });
     }
 
