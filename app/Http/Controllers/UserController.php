@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\User;
+use App\Role;
 use App\Mail\ResetPassword;
 use App\ResetPassword as Pass;
 use Illuminate\Http\Request;
@@ -60,6 +61,8 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
       $me = auth()->user();
+      $isMe = $user->id === $me->id;
+
       $validator = Validator::make($request->all(), [
         'firstname' => 'required|string|max:255',
         'lastname' => 'required|string|max:255',
@@ -81,9 +84,38 @@ class UserController extends Controller
       $user->lastname = e($request->lastname);
       $user->email = e($request->email);
       $user->default_page = e(strip_tags($request->default_page));
+
+      // if user is admin
+      if ($request->role_id == -1) {
+        $user->is_admin = 1;
+        $user->role_id = null;
+      } else if (empty($request->role_id)) {
+        $user->role_id = null;
+        if (!$isMe) {
+          $user->is_admin = 0;
+        }
+      } else {
+        $role = Role::find($request->role_id);
+
+         // if no corresponding role was found, create one
+        if (empty($role)) {
+          $role = Role::where('name', $request->role_id)->first();
+          if (empty($role)) {
+            $role = Role::create([
+              'name' => $request->role_id,
+            ]);
+          }
+        }
+        $user->role_id = $role->id;
+
+        if (!$isMe) {
+          $user->is_admin = 0;
+        }
+      }
+
       $user->save();
 
-      $isMe = $user->id === $me->id;
+      // if I'm editing y account, sends the new data
       $data = ($isMe) ? $user : (object) [];
       $data->isMe = $isMe;
 
