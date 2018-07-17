@@ -27,7 +27,7 @@ class CreateProjectOrdersTable extends Migration
             $table
               ->foreign('order_id')
               ->references('id')
-              ->on('orders')
+              ->on('sellsy_orders')
               ->onDelete('cascade');
         });
     }
