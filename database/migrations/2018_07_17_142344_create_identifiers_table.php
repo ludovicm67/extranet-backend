@@ -15,6 +15,7 @@ class CreateIdentifiersTable extends Migration
     {
         Schema::create('identifiers', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
