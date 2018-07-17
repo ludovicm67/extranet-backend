@@ -14,8 +14,23 @@ class CreateProjectIdentifiersTable extends Migration
     public function up()
     {
         Schema::create('project_identifiers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->unsignedInteger('project_id');
+            $table->unsignedInteger('identifier_id');
+            $table->text('value');
+            $table->tinyInteger('confidential');
             $table->timestamps();
+
+            $table
+              ->foreign('project_id')
+              ->references('id')
+              ->on('projects')
+              ->onDelete('cascade');
+
+            $table
+              ->foreign('identifier_id')
+              ->references('id')
+              ->on('identifiers')
+              ->onDelete('cascade');
         });
     }
 
