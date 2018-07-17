@@ -8,10 +8,8 @@ Route::group(['middleware' => 'api'], function () {
   Route::get('cron/sellsy_orders', 'CronController@sellsy_orders');
   Route::get('cron/sellsy_invoices', 'CronController@sellsy_invoices');
 
-  // Route::post('auth/register', 'AuthController@register');
   Route::post('auth/login', 'AuthController@login');
-  // Route::post('auth/recover', 'AuthController@recover');
-
+  Route::post('password/reset', 'UserController@resetPassword');
 
   Route::group(['middleware' => ['jwt.auth']], function() {
     Route::match(['PUT', 'PATCH'], 'users/me', 'UserController@updateMe');

@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\User;
+use App\Mail\ResetPassword;
+use App\ResetPassword as Pass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Ramsey\Uuid\Uuid;
 
 class UserController extends Controller
 {
@@ -110,5 +114,39 @@ class UserController extends Controller
         'success' => false,
         'message' => 'you cannot delete yourself!',
       ], 403);
+    }
+
+    public function resetPassword(Request $request) {
+
+      // first of all, delete all old records
+      $date = new \DateTime();
+      $date->modify('-1 week');
+      $formatted = $date->format('Y-m-d H:i:s');
+      Pass::where('updated_at', '<=', $formatted)->delete();
+
+      // then, validate the email
+      $validator = Validator::make($request->all(), [
+        'email' => 'required|email|max:255|exists:users,email',
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json([
+          'success' => false,
+          'errors' => $validator->errors()->all(),
+        ], 400);
+      }
+
+      // a user with this email exists, so we get it
+      $user = User::where('email', $request->email)->first();
+
+      // we generate a token, create a DB entry and send the mail
+      $token = Uuid::uuid4()->toString();
+      $pass = Pass::create([
+        'user_id' => $user->id,
+        'token' => $token,
+      ]);
+
+      Mail::to($user->email)->send(new ResetPassword($pass));
+
     }
 }

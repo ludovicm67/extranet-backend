@@ -1,5 +1,10 @@
 <?php
 
+use \ludovicm67\Laravel\Multidomain\Configuration;
+
+$config = Configuration::getInstance();
+$domainConf = $config->getDomain();
+
 return [
 
     /*
@@ -16,7 +21,7 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => 'sendmail',
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +61,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => $domainConf->get('email_from'),
+        'name' => $domainConf->get('site_name'),
     ],
 
     /*
