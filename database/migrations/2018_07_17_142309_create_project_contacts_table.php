@@ -14,8 +14,21 @@ class CreateProjectContactsTable extends Migration
     public function up()
     {
         Schema::create('project_contacts', function (Blueprint $table) {
-            $table->increments('id');
+            $table->unsignedInteger('project_id');
+            $table->unsignedInteger('contact_id');
             $table->timestamps();
+
+            $table
+              ->foreign('project_id')
+              ->references('id')
+              ->on('projects')
+              ->onDelete('cascade');
+
+            $table
+              ->foreign('contact_id')
+              ->references('id')
+              ->on('contacts')
+              ->onDelete('cascade');
         });
     }
 
