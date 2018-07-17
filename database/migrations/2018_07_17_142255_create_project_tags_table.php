@@ -14,8 +14,22 @@ class CreateProjectTagsTable extends Migration
     public function up()
     {
         Schema::create('project_tags', function (Blueprint $table) {
-            $table->increments('id');
+            $table->unsignedInteger('project_id');
+            $table->unsignedInteger('tag_id');
+            $table->string('value')->nullable();
             $table->timestamps();
+
+            $table
+              ->foreign('project_id')
+              ->references('id')
+              ->on('projects')
+              ->onDelete('cascade');
+
+            $table
+              ->foreign('tag_id')
+              ->references('id')
+              ->on('tags')
+              ->onDelete('cascade');
         });
     }
 
