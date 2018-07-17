@@ -14,8 +14,21 @@ class CreateProjectOrdersTable extends Migration
     public function up()
     {
         Schema::create('project_orders', function (Blueprint $table) {
-            $table->increments('id');
+            $table->unsignedInteger('project_id');
+            $table->unsignedInteger('order_id');
             $table->timestamps();
+
+            $table
+              ->foreign('project_id')
+              ->references('id')
+              ->on('projects')
+              ->onDelete('cascade');
+
+            $table
+              ->foreign('order_id')
+              ->references('id')
+              ->on('orders')
+              ->onDelete('cascade');
         });
     }
 
