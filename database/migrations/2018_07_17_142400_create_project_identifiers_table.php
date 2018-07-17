@@ -14,10 +14,11 @@ class CreateProjectIdentifiersTable extends Migration
     public function up()
     {
         Schema::create('project_identifiers', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('project_id');
             $table->unsignedInteger('identifier_id');
-            $table->text('value');
-            $table->tinyInteger('confidential');
+            $table->text('value')->nullable();
+            $table->tinyInteger('confidential')->default(0);
             $table->timestamps();
 
             $table

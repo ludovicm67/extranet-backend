@@ -14,8 +14,17 @@ class CreateProjectUrlsTable extends Migration
     public function up()
     {
         Schema::create('project_urls', function (Blueprint $table) {
-            $table->increments('id');
+            $table->unsignedInteger('project_id');
+            $table->string('name')->nullable();
+            $table->string('value')->nullable();
+            $table->integer('order')->default(0);
             $table->timestamps();
+
+            $table
+              ->foreign('project_id')
+              ->references('id')
+              ->on('projects')
+              ->onDelete('cascade');
         });
     }
 
