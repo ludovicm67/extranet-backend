@@ -59,7 +59,38 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+      $me = auth()->user();
+      $validator = Validator::make($request->all(), [
+        'firstname' => 'required|string|max:255',
+        'lastname' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json([
+          'success' => false,
+          'errors' => $validator->errors()->all(),
+        ], 400);
+      }
+
+      // if we need to change the password
+      if (!empty($request->password)) {
+        $user->password = bcrypt(trim($request->password));
+      }
+      $user->firstname = e($request->firstname);
+      $user->lastname = e($request->lastname);
+      $user->email = e($request->email);
+      $user->default_page = e(strip_tags($request->default_page));
+      $user->save();
+
+      $isMe = $user->id === $me->id;
+      $data = ($isMe) ? $user : (object) [];
+      $data->isMe = $isMe;
+
+      return response()->json([
+        'success' => true,
+        'data' => $data,
+      ]);
     }
 
     public function updateMe(Request $request) {
@@ -141,7 +172,7 @@ class UserController extends Controller
 
       if (empty($request->token)) {
         // we generate a token, create a DB entry and send the mail
-        $token = Uuid::uuid4()->toString();
+        $token = explode('-', Uuid::uuid4()->toString())[1];
         $pass = Pass::create([
           'user_id' => $user->id,
           'token' => $token,
