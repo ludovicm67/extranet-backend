@@ -120,7 +120,7 @@ class UserController extends Controller
 
       // first of all, delete all old records
       $date = new \DateTime();
-      $date->modify('-1 week');
+      $date->modify('-1 hour');
       $formatted = $date->format('Y-m-d H:i:s');
       Pass::where('updated_at', '<=', $formatted)->delete();
 
@@ -139,14 +139,43 @@ class UserController extends Controller
       // a user with this email exists, so we get it
       $user = User::where('email', $request->email)->first();
 
-      // we generate a token, create a DB entry and send the mail
-      $token = Uuid::uuid4()->toString();
-      $pass = Pass::create([
-        'user_id' => $user->id,
-        'token' => $token,
+      if (empty($request->token)) {
+        // we generate a token, create a DB entry and send the mail
+        $token = Uuid::uuid4()->toString();
+        $pass = Pass::create([
+          'user_id' => $user->id,
+          'token' => $token,
+        ]);
+
+        Mail::to($user->email)->send(new ResetPassword($pass));
+
+        return response()->json([
+          'success' => true,
+          'message' => 'mail containing the token was send to the user',
+        ]);
+      }
+
+      // validate other fields
+      $validator = Validator::make($request->all(), [
+        'token' => 'required|max:255|exists:reset_password,token',
+        'password' => 'required|min:1|max:255',
       ]);
 
-      Mail::to($user->email)->send(new ResetPassword($pass));
+      if ($validator->fails()) {
+        return response()->json([
+          'success' => false,
+          'errors' => $validator->errors()->all(),
+        ], 400);
+      }
 
+      $user->password = bcrypt(trim($request->password));
+      $user->save();
+
+      $pass = Pass::where('user_id', $user->id)->delete();
+
+      return response()->json([
+        'success' => true,
+        'message' => 'new password successfully set, you can now log in.',
+      ]);
     }
 }
