@@ -34,7 +34,60 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $validator = Validator::make($request->all(), [
+        'firstname' => 'required|string|max:255',
+        'lastname' => 'required|string|max:255',
+        'password' => 'required|string|min:1|max:255',
+        'email' => 'required|email|max:255|unique:users,email',
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json([
+          'success' => false,
+          'errors' => $validator->errors()->all(),
+        ], 400);
+      }
+
+      // basic informations
+      $userPassword = bcrypt(trim($request->password));
+      $userFirstname = e($request->firstname);
+      $userLastname = e($request->lastname);
+      $userEmail = e($request->email);
+      $userDefaultPage = e(strip_tags($request->default_page));
+      $userIsAdmin = 0;
+      $userRoleId = null;
+
+      // if user is admin
+      if ($request->role_id == -1) {
+        $userIsAdmin = 1;
+      } else if (!empty($request->role_id)) {
+        $role = Role::find($request->role_id);
+
+         // if no corresponding role was found, create one
+        if (empty($role)) {
+          $role = Role::where('name', $request->role_id)->first();
+          if (empty($role)) {
+            $role = Role::create([
+              'name' => $request->role_id,
+            ]);
+          }
+        }
+        $userRoleId = $role->id;
+      }
+
+      User::create([
+        'password' => $userPassword,
+        'firstname' => $userFirstname,
+        'lastname' => $userLastname,
+        'email' => $userEmail,
+        'default_page' => $userDefaultPage,
+        'is_admin' => $userIsAdmin,
+        'role_id' => $userRoleId,
+      ]);
+
+      return response()->json([
+        'success' => true,
+      ]);
     }
 
     /**

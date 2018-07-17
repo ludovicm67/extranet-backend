@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\User;
 use App\Role;
 use Illuminate\Http\Request;
 
@@ -99,6 +100,9 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+      User::where('role_id', $role->id)->update([
+        'role_id' => null,
+      ]);
       $role->delete();
 
       return response()->json([
