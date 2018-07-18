@@ -53,7 +53,7 @@ domaines configurés sur le port 8000.
 
 Cependant, si il y a besoin d'accéder au site via son IP locale depuis d'autres
 appareils, comme par un mobile ou un autre PC par exemple, il faudra lancer
-le serveur de développement avec `php artisan serve --host=0.0.0.0`.
+le serveur de développement avec `php artisan serve --host 0.0.0.0`.
 
 Lors du déploiement du site en production, il faudra configurer nginx ou Apache
 pour servir le dossier `public` uniquement.
