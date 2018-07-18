@@ -5,43 +5,54 @@ Site réalisé avec Laravel (https://laravel.com/).
 
 Ce site nécessite une version de PHP supérieure ou égale à 7.1.3
 
+
+
 ## Mise en route
 
-Après avoir cloné le dépôt, il faudra commencer par installer les dépendences,
-avec un simple coup de `composer install`.
+Tout d'abord, clôner le dépôt et rendez-vous dans le dossier du projet.
 
-Il faudra également mettre à jour les informations de la base de donnée, en
-copiant le fichier `.env.example` en `.env` et en éditant ce dernier.
+Copier ensuite le fichier `config.example.yml` en `config.yml` et ajouter
+autant d'entrées que de domaines, configurer les noms, l'url de fallback, etc...
 
-Les clés à éditer pour la base de donnée sont les suivantes :
+Copier ensuite le fichier `.env.example` en `.env`. Contrairement aux
+installations classiques de Laravel, ce fichier ne sera pas spécialement
+utilisé, étant donné que toute la partie configuration multi-domaines se fait
+dans le fichier `config.yml`, les clés intéressantes à changer dans ce fichier
+sont les deux suivantes, dans le cas où l'on souhaiterait passer l'application
+en production :
 
-```ini
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=homestead
-DB_USERNAME=homestead
-DB_PASSWORD=secret
-```
+  - `APP_ENV`: passer la valeur à `production`
 
-Une fois cela fait, il ne restera plus qu'à copier le fichier
-`config.example.yml` en `config.yml`, et de compléter le fichier avec les
-domaines supportés et les clés d'API, et de générer les clés secrètes à l'aide
-des commandes suivantes :
+  - `APP_DEBUG`: passer la valeur à `false`
 
-```sh
-php artisan key:generate
-php artisan jwt:secret
-```
 
-et de lancer les différentes migrations avec la commande suivante :
+
+Installer ensuite les dépendences, avec un simple coup de `composer install`.
+
+Générez ensuite les clés secrètes nécessaires à l'application, en lançant
+les commandes suivantes :
 
 ```sh
-php artisan migrate
+php artisan key:generate --force
+php artisan jwt:secret --force
 ```
 
-Pour lancer le site en local, un simple coup de `php artisan serve` lancera un
-serveur de développement sur http://localhost:8000.
+et lancer la commande suivante pour chacun des domaines configuré dans le
+fichier `config.yml`, en remplaçant `DOMAIN` par le domaine, pour lancer les
+différentes migrations :
 
-Lors du déploiement du site, il faudra configurer nginx ou Apache pour servir
-le dossier `public` uniquement.
+```sh
+php artisan migrate --database=DOMAIN --force
+```
+
+Pour lancer le site **en local**, un simple coup de `php artisan serve` lancera
+un serveur de développement sur http://localhost:8000; s'il n'y a pas de domaine
+`localhost` configuré dans le fichier `config.yml`, il faudra juste penser
+à ajouter une entrée dans le fichier hosts du système.
+
+Cependant, si il y a besoin d'accéder au site via son IP locale depuis d'autres
+appareils, comme par un mobile ou un autre PC par exemple, il faudra lancer
+le serveur de développement avec `php artisan serve --host=0.0.0.0`.
+
+Lors du déploiement du site en production, il faudra configurer nginx ou Apache
+pour servir le dossier `public` uniquement.
