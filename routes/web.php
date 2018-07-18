@@ -21,6 +21,7 @@ Route::group(['middleware' => 'api'], function () {
       'users' => 'UserController',
       'roles' => 'RoleController',
       'types' => 'TypeController',
+      'identifiers' => 'IdentifierController',
       'clients' => 'SellsyClientController',
       'sellsy_clients' => 'SellsyClientController',
       'sellsy_contacts' => 'SellsyContactController',
