@@ -22,6 +22,7 @@ Route::group(['middleware' => 'api'], function () {
       'roles' => 'RoleController',
       'types' => 'TypeController',
       'identifiers' => 'IdentifierController',
+      'tags' => 'TagController',
       'clients' => 'SellsyClientController',
       'sellsy_clients' => 'SellsyClientController',
       'sellsy_contacts' => 'SellsyContactController',

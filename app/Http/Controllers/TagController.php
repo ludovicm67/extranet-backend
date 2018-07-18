@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Validator;
-use App\Identifier;
+use App\Tag;
 use Illuminate\Http\Request;
 
-class IdentifierController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class IdentifierController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => Identifier::all(),
+        'data' => Tag::all(),
       ]);
     }
 
@@ -30,7 +30,7 @@ class IdentifierController extends Controller
     public function store(Request $request)
     {
       $validator = Validator::make($request->all(), [
-        'name' => 'required|max:255|unique:identifiers',
+        'name' => 'required|max:255|unique:tags',
       ]);
 
       if ($validator->fails()) {
@@ -40,9 +40,9 @@ class IdentifierController extends Controller
         ], 409);
       }
 
-      $identifier = new Identifier;
-      $identifier->name = $request->name;
-      $identifier->save();
+      $tag = new Tag;
+      $tag->name = $request->name;
+      $tag->save();
 
       return response()->json([
         'success' => true,
@@ -52,14 +52,14 @@ class IdentifierController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Identifier  $identifier
+     * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function show(Identifier $identifier)
+    public function show(Tag $tag)
     {
       return response()->json([
         'success' => true,
-        'data' => $identifier
+        'data' => $tag
       ]);
     }
 
@@ -67,13 +67,13 @@ class IdentifierController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Identifier  $identifier
+     * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Identifier $identifier)
+    public function update(Request $request, Tag $tag)
     {
       $validator = Validator::make($request->all(), [
-        'name' => 'required|max:255|unique:identifiers,name,' . $identifier->id,
+        'name' => 'required|max:255|unique:tags,name,' . $tag->id,
       ]);
 
       if ($validator->fails()) {
@@ -83,8 +83,8 @@ class IdentifierController extends Controller
         ], 409);
       }
 
-      $identifier->name = e($request->name);
-      $identifier->save();
+      $tag->name = e($request->name);
+      $tag->save();
 
       return response()->json([
         'success' => true,
@@ -94,12 +94,12 @@ class IdentifierController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Identifier  $identifier
+     * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Identifier $identifier)
+    public function destroy(Tag $tag)
     {
-      $identifier->delete();
+      $tag->delete();
 
       return response()->json([
         'success' => true,
