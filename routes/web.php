@@ -20,6 +20,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::apiResources([
       'users' => 'UserController',
       'roles' => 'RoleController',
+      'types' => 'TypeController',
       'clients' => 'SellsyClientController',
       'sellsy_clients' => 'SellsyClientController',
       'sellsy_contacts' => 'SellsyContactController',
@@ -28,9 +29,6 @@ Route::group(['middleware' => 'api'], function () {
     ]);
 
     Route::get('auth/logout', 'AuthController@logout');
-    Route::get('test', function(){
-      return response()->json(['foo' => 'bar']);
-    });
   });
 
 });
