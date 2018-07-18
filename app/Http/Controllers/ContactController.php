@@ -104,7 +104,55 @@ class ContactController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
-        //
+      $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'mail' => 'nullable|email|max:255',
+        'phone' => 'nullable|string|max:255',
+        'address' => 'nullable|string|max:255',
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json([
+          'success' => false,
+          'errors' => $validator->errors()->all(),
+        ], 400);
+      }
+
+      // basic informations
+      $contactName = e($request->name);
+      $contactMail = e($request->mail);
+      $contactPhone = e($request->phone);
+      $contactAddress = e($request->address);
+      $contactOther = e($request->other);
+      $contactTypeId = null;
+
+      if (!empty($request->type_id)) {
+        $type = Type::find($request->type_id);
+
+         // if no corresponding type was found, create one
+        if (empty($type)) {
+          $type = Type::where('name', $request->type_id)->first();
+          if (empty($type)) {
+            $type = Type::create([
+              'name' => $request->type_id,
+            ]);
+          }
+        }
+        $contactTypeId = $type->id;
+      }
+
+      $contact->name = $contactName;
+      $contact->mail = $contactMail;
+      $contact->phone = $contactPhone;
+      $contact->address = $contactAddress;
+      $contact->other = $contactOther;
+      $contact->type_id = $contactTypeId;
+
+      $contact->save();
+
+      return response()->json([
+        'success' => true,
+      ]);
     }
 
     /**
