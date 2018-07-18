@@ -48,7 +48,8 @@ php artisan migrate --database=DOMAIN --force
 Pour lancer le site **en local**, un simple coup de `php artisan serve` lancera
 un serveur de développement sur http://localhost:8000; s'il n'y a pas de domaine
 `localhost` configuré dans le fichier `config.yml`, il faudra juste penser
-à ajouter une entrée dans le fichier hosts du système.
+à ajouter une entrée dans le fichier hosts du système, et accéder à l'un des
+domaines configurés sur le port 8000.
 
 Cependant, si il y a besoin d'accéder au site via son IP locale depuis d'autres
 appareils, comme par un mobile ou un autre PC par exemple, il faudra lancer
