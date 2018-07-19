@@ -84,7 +84,7 @@ class TypeController extends Controller
         ], 409);
       }
 
-      $type->name = e($request->name);
+      $type->name = $request->name;
       $type->save();
 
       return response()->json([

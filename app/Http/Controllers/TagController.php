@@ -83,7 +83,7 @@ class TagController extends Controller
         ], 409);
       }
 
-      $tag->name = e($request->name);
+      $tag->name = $request->name;
       $tag->save();
 
       return response()->json([

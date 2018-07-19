@@ -83,7 +83,7 @@ class IdentifierController extends Controller
         ], 409);
       }
 
-      $identifier->name = e($request->name);
+      $identifier->name = $request->name;
       $identifier->save();
 
       return response()->json([

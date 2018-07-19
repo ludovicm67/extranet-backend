@@ -45,11 +45,11 @@ class ContactController extends Controller
       }
 
       // basic informations
-      $contactName = e($request->name);
-      $contactMail = e($request->mail);
-      $contactPhone = e($request->phone);
-      $contactAddress = e($request->address);
-      $contactOther = e($request->other);
+      $contactName = $request->name;
+      $contactMail = $request->mail;
+      $contactPhone = $request->phone;
+      $contactAddress = $request->address;
+      $contactOther = $request->other;
       $contactTypeId = null;
 
       if (!empty($request->type_id)) {
@@ -119,11 +119,11 @@ class ContactController extends Controller
       }
 
       // basic informations
-      $contactName = e($request->name);
-      $contactMail = e($request->mail);
-      $contactPhone = e($request->phone);
-      $contactAddress = e($request->address);
-      $contactOther = e($request->other);
+      $contactName = $request->name;
+      $contactMail = $request->mail;
+      $contactPhone = $request->phone;
+      $contactAddress = $request->address;
+      $contactOther = $request->other;
       $contactTypeId = null;
 
       if (!empty($request->type_id)) {

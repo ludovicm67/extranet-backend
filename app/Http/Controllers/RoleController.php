@@ -84,7 +84,7 @@ class RoleController extends Controller
         ], 409);
       }
 
-      $role->name = e($request->name);
+      $role->name = $request->name;
       $role->save();
 
       return response()->json([

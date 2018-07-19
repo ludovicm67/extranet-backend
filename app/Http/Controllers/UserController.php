@@ -50,10 +50,10 @@ class UserController extends Controller
 
       // basic informations
       $userPassword = bcrypt(trim($request->password));
-      $userFirstname = e($request->firstname);
-      $userLastname = e($request->lastname);
-      $userEmail = e($request->email);
-      $userDefaultPage = e(strip_tags($request->default_page));
+      $userFirstname = $request->firstname;
+      $userLastname = $request->lastname;
+      $userEmail = $request->email;
+      $userDefaultPage = strip_tags($request->default_page);
       $userIsAdmin = 0;
       $userRoleId = null;
 
@@ -133,10 +133,10 @@ class UserController extends Controller
       if (!empty($request->password)) {
         $user->password = bcrypt(trim($request->password));
       }
-      $user->firstname = e($request->firstname);
-      $user->lastname = e($request->lastname);
-      $user->email = e($request->email);
-      $user->default_page = e(strip_tags($request->default_page));
+      $user->firstname = $request->firstname;
+      $user->lastname = $request->lastname;
+      $user->email = $request->email;
+      $user->default_page = strip_tags($request->default_page);
 
       // if user is admin
       if ($request->role_id == -1) {
@@ -198,10 +198,10 @@ class UserController extends Controller
       if (!empty($request->password)) {
         $user->password = bcrypt(trim($request->password));
       }
-      $user->firstname = e($request->firstname);
-      $user->lastname = e($request->lastname);
-      $user->email = e($request->email);
-      $user->default_page = e(strip_tags($request->default_page));
+      $user->firstname = $request->firstname;
+      $user->lastname = $request->lastname;
+      $user->email = $request->email;
+      $user->default_page = strip_tags($request->default_page);
       $user->save();
 
       return response()->json([
