@@ -91,7 +91,7 @@ class ContactController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => $contact,
+        'data' => $contact->fresh(['type']),
       ]);
     }
 

@@ -10,4 +10,8 @@ class Contact extends Model
   protected $fillable = [
     'name', 'type_id', 'mail', 'phone', 'address', 'other'
   ];
+
+  public function type() {
+    return $this->hasOne(\App\Type::class, 'id', 'type_id');
+  }
 }
