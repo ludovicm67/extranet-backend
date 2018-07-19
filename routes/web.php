@@ -29,6 +29,7 @@ Route::group(['middleware' => 'api'], function () {
       'sellsy_orders' => 'SellsyOrderController',
       'sellsy_invoices' => 'SellsyInvoiceController',
       'contacts' => 'ContactController',
+      'projects' => 'ProjectController',
     ]);
 
     Route::get('auth/logout', 'AuthController@logout');
