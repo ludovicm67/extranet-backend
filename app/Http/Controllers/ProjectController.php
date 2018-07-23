@@ -21,7 +21,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+      return response()->json([
+        'success' => true,
+        'data' => Project::all(),
+      ]);
     }
 
     // create a tag when needed; returns the tag id
