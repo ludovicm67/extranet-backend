@@ -7,6 +7,9 @@ use App\Project;
 use App\ProjectContact;
 use App\ProjectOrder;
 use App\ProjectUser;
+use App\ProjectTag;
+use App\ProjectUrl;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -19,6 +22,19 @@ class ProjectController extends Controller
     public function index()
     {
         //
+    }
+
+    // create a tag when needed; returns the tag id
+    private function createTagsOnThFly($id) {
+      if (!is_numeric($id) && !empty($tagName)) {
+        $searchTag = Tag::where('name', $id);
+        if (!empty($searchTag)) {
+          return $searchTag[0]->id;
+        }
+        $tag = Tag::create(['name' => $id]);
+        return $tag->id;
+      }
+      return ($id == 0) ? null : $id;
     }
 
     /**
@@ -83,68 +99,31 @@ class ProjectController extends Controller
         }
       }
 
+      foreach ($request->tags as $tag) {
+        if (empty($tag['id'])) continue;
+        $tagId = $this->createTagsOnThFly($tag['id']);
+        if (empty($tagId)) continue;
+        ProjectTag::create([
+          'project_id' => $project->id,
+          'tag_id' => $tagId,
+        ]);
+      }
+
+      $orderUrl = 0;
+      foreach ($request->urls as $url) {
+        if (empty($url['name']) && empty($url['value'])) continue;
+        ProjectUrl::create([
+          'project_id' => $project->id,
+          'name' => $url['name'],
+          'value' => $url['value'],
+          'order' => $orderUrl++,
+        ]);
+      }
+
       return response()->json([
         'success' => true,
-        'debug' => $project,
       ]);
     }
-
-
-
-    public function new()
-  {
-        if (
-          isset($_POST['tagName']) &&
-          isset($_POST['tagName']) &&
-          is_array($_POST['tagName']) == is_array($_POST['tagValue']) &&
-          count($_POST['tagName']) &&
-          count($_POST['tagValue'])
-        ) {
-          for ($i = 0; $i < count($_POST['tagName']); $i++) {
-            $tagId = $this->createTagsOnThFly(
-              $this->input->post('tagName')[$i]
-            );
-            $tagVal = strip_tags(trim($this->input->post('tagValue')[$i]));
-            if (!empty($tagId)) {
-              $this->db->insert('project_tags', [
-                'project_id' => $projectId,
-                'tag_id' => $tagId,
-                'value' => $tagVal
-              ]);
-              $contentToLog['tags'][] = [
-                'tag_id' => $tagId,
-                'value' => $tagVal
-              ];
-            }
-          }
-        }
-
-        if (
-          isset($_POST['urlName']) &&
-          isset($_POST['urlName']) &&
-          is_array($_POST['urlName']) == is_array($_POST['urlValue']) &&
-          count($_POST['urlName']) &&
-          count($_POST['urlValue'])
-        ) {
-          for ($i = 0; $i < count($_POST['urlName']); $i++) {
-            $urlName = strip_tags(trim($this->input->post('urlName')[$i]));
-            $urlValue = strip_tags(trim($this->input->post('urlValue')[$i]));
-            if (!empty($urlName) || !empty($urlValue)) {
-              $this->db->insert('project_urls', [
-                'project_id' => $projectId,
-                'name' => $urlName,
-                'value' => $urlValue,
-                'order' => $i
-              ]);
-              $contentToLog['urls'][] = [
-                'name' => $urlName,
-                'value' => $urlValue,
-                'order' => $i
-              ];
-            }
-          }
-        }
-  }
 
     /**
      * Display the specified resource.
