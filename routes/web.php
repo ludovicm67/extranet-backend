@@ -3,17 +3,29 @@
 Route::group(['middleware' => 'api'], function () {
 
   // routes for cron jobs
-  Route::get('cron/sellsy_clients', 'CronController@sellsy_clients');
-  Route::get('cron/sellsy_contacts', 'CronController@sellsy_contacts');
-  Route::get('cron/sellsy_orders', 'CronController@sellsy_orders');
-  Route::get('cron/sellsy_invoices', 'CronController@sellsy_invoices');
+  Route::get('cron/sellsy_clients', 'CronController@sellsy_clients')
+        ->name('cron.sellsy_clients');
+  Route::get('cron/sellsy_contacts', 'CronController@sellsy_contacts')
+        ->name('cron.sellsy_contacts');
+  Route::get('cron/sellsy_orders', 'CronController@sellsy_orders')
+        ->name('cron.sellsy_orders');
+  Route::get('cron/sellsy_invoices', 'CronController@sellsy_invoices')
+        ->name('cron.sellsy_invoices');
 
-  Route::post('auth/login', 'AuthController@login');
-  Route::post('password/reset', 'UserController@resetPassword');
+  Route::post('auth/login', 'AuthController@login')->name('auth.login');
+  Route::post('password/reset', 'UserController@resetPassword')
+        ->name('password.reset');
 
   Route::group(['middleware' => ['jwt.auth']], function() {
-    Route::match(['PUT', 'PATCH'], 'users/me', 'UserController@updateMe');
-    Route::get('users/me', 'AuthController@me');
+    Route::match(['PUT', 'PATCH'], 'users/me', 'UserController@updateMe')
+          ->name('users.update_me');
+    Route::get('users/me', 'AuthController@me')
+          ->name('users.me');
+
+    Route::post('project/{project}/fav', 'ProjectController@fav')
+          ->name('projects.fav');
+    Route::post('project/{project}/unfav', 'ProjectController@unfav')
+          ->name('projects.unfav');
 
     Route::model('client', \App\SellsyClient::class);
     Route::model('sellsy_client', \App\SellsyClient::class);
@@ -32,7 +44,7 @@ Route::group(['middleware' => 'api'], function () {
       'projects' => 'ProjectController',
     ]);
 
-    Route::get('auth/logout', 'AuthController@logout');
+    Route::get('auth/logout', 'AuthController@logout')->name('auth.logout');
   });
 
 });
