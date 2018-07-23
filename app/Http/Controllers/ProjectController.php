@@ -29,15 +29,16 @@ class ProjectController extends Controller
 
     // create a tag when needed; returns the tag id
     private function createTagsOnThFly($id) {
-      if (!is_numeric($id) && !empty($tagName)) {
-        $searchTag = Tag::where('name', $id);
-        if (!empty($searchTag)) {
-          return $searchTag[0]->id;
+      $tag = Tag::find($id);
+      if (empty($tag)) {
+        $tag = Tag::where('name', $id)->first();
+        if (empty($tag)) {
+          $tag = Tag::create([
+            'name' => $id,
+          ]);
         }
-        $tag = Tag::create(['name' => $id]);
-        return $tag->id;
       }
-      return ($id == 0) ? null : $id;
+      return $tag->id;
     }
 
     /**
@@ -84,7 +85,7 @@ class ProjectController extends Controller
         }
       }
 
-      if (!empty($request->orders)) {
+      if (!empty($request->orders) && is_array($request->orders)) {
         foreach (array_unique($request->orders) as $order) {
           ProjectOrder::create([
             'project_id' => $project->id,
@@ -93,7 +94,7 @@ class ProjectController extends Controller
         }
       }
 
-      if (!empty($request->users)) {
+      if (!empty($request->users) && is_array($request->users)) {
         foreach (array_unique($request->users) as $user) {
           ProjectUser::create([
             'project_id' => $project->id,
@@ -102,25 +103,30 @@ class ProjectController extends Controller
         }
       }
 
-      foreach ($request->tags as $tag) {
-        if (empty($tag['id'])) continue;
-        $tagId = $this->createTagsOnThFly($tag['id']);
-        if (empty($tagId)) continue;
-        ProjectTag::create([
-          'project_id' => $project->id,
-          'tag_id' => $tagId,
-        ]);
+      if (!empty($request->tags) && is_array($request->tags) && is_array($request->tags)) {
+        foreach ($request->tags as $tag) {
+          if (empty($tag['id'])) continue;
+          $tagId = $this->createTagsOnThFly($tag['id']);
+          if (empty($tagId)) continue;
+          ProjectTag::create([
+            'project_id' => $project->id,
+            'tag_id' => $tagId,
+            'value' => $tag['value'],
+          ]);
+        }
       }
 
-      $orderUrl = 0;
-      foreach ($request->urls as $url) {
-        if (empty($url['name']) && empty($url['value'])) continue;
-        ProjectUrl::create([
-          'project_id' => $project->id,
-          'name' => $url['name'],
-          'value' => $url['value'],
-          'order' => $orderUrl++,
-        ]);
+      if (!empty($request->urls) && is_array($request->urls)) {
+        $orderUrl = 0;
+        foreach ($request->urls as $url) {
+          if (empty($url['name']) && empty($url['value'])) continue;
+          ProjectUrl::create([
+            'project_id' => $project->id,
+            'name' => $url['name'],
+            'value' => $url['value'],
+            'order' => $orderUrl++,
+          ]);
+        }
       }
 
       return response()->json([
@@ -160,5 +166,8 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
       $project->delete();
+      return response()->json([
+        'success' => true,
+      ]);
     }
 }
