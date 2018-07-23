@@ -9,6 +9,7 @@ use App\ProjectOrder;
 use App\ProjectUser;
 use App\ProjectTag;
 use App\ProjectUrl;
+use App\ProjectFavorite;
 use App\Tag;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class ProjectController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => Project::orderBy('end_at', 'desc')->get(),
+        'data' => Project::orderBy('end_at', 'desc')->get()->sortByDesc('favorited')->values()->all(),
       ]);
     }
 
@@ -213,6 +214,35 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
       $project->delete();
+      return response()->json([
+        'success' => true,
+      ]);
+    }
+
+    public function fav(Request $request, Project $project) {
+      $pf = ProjectFavorite::where([
+        'project_id' => $project->id,
+        'user_id' => auth()->user()->id,
+      ])->first();
+
+      if (empty($pf)) {
+        ProjectFavorite::create([
+          'project_id' => $project->id,
+          'user_id' => auth()->user()->id,
+        ]);
+      }
+
+      return response()->json([
+        'success' => true,
+      ]);
+    }
+
+    public function unfav(Request $request, Project $project) {
+      ProjectFavorite::where([
+        'project_id' => $project->id,
+        'user_id' => auth()->user()->id,
+      ])->delete();
+
       return response()->json([
         'success' => true,
       ]);

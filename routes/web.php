@@ -22,9 +22,9 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('users/me', 'AuthController@me')
           ->name('users.me');
 
-    Route::post('project/{project}/fav', 'ProjectController@fav')
+    Route::post('projects/{project}/fav', 'ProjectController@fav')
           ->name('projects.fav');
-    Route::post('project/{project}/unfav', 'ProjectController@unfav')
+    Route::post('projects/{project}/unfav', 'ProjectController@unfav')
           ->name('projects.unfav');
 
     Route::model('client', \App\SellsyClient::class);
