@@ -23,7 +23,7 @@ class ProjectController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => Project::all(),
+        'data' => Project::orderBy('end_at', 'desc')->get(),
       ]);
     }
 
