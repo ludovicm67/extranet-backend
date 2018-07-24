@@ -15,11 +15,11 @@ class Project extends Model
   ];
 
   public function contacts() {
-    return $this->belongsToMany('App\Contact', 'project_contacts');
+    return $this->belongsToMany('App\Contact', 'project_contacts')->with('type');
   }
 
   public function orders() {
-    return $this->belongsToMany('App\SellsyOrder', 'project_orders', 'project_id', 'order_id');
+    return $this->belongsToMany('App\SellsyOrder', 'project_orders', 'project_id', 'order_id')->with('invoices');
   }
 
   public function users() {
@@ -32,6 +32,10 @@ class Project extends Model
 
   public function urls() {
     return $this->hasMany('App\ProjectUrl');
+  }
+
+  public function client() {
+    return $this->hasOne('App\SellsyClient', 'id', 'client_id');
   }
 
   public function getFavoritedAttribute() {

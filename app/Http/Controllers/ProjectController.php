@@ -150,7 +150,7 @@ class ProjectController extends Controller
       return response()->json([
         'success' => true,
         'data' => $project->fresh([
-          'users', 'orders', 'contacts', 'tags', 'urls'
+          'users', 'orders', 'contacts', 'tags', 'urls', 'client'
         ]),
       ]);
     }
