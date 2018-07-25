@@ -44,6 +44,8 @@ Route::group(['middleware' => 'api'], function () {
       'contacts' => 'ContactController',
       'projects' => 'ProjectController',
       'contracts' => 'ContractController',
+      'leave' => 'LeaveController',
+      'expenses' => 'ExpenseController',
     ]);
 
     Route::get('auth/logout', 'AuthController@logout')->name('auth.logout');
