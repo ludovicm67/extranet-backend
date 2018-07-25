@@ -17,7 +17,7 @@ class ContractController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => Contract::all(),
+        'data' => Contract::with('user')->get(),
       ]);
     }
 
@@ -71,7 +71,7 @@ class ContractController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => $contract,
+        'data' => $contract->fresh(['user']),
       ]);
     }
 

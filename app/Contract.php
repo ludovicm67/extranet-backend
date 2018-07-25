@@ -10,4 +10,8 @@ class Contract extends Model
   protected $fillable = [
     'user_id', 'type', 'start_at', 'end_at'
   ];
+
+  public function user() {
+    return $this->hasOne(User::class, 'id', 'user_id');
+  }
 }
