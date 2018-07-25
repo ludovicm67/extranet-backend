@@ -36,7 +36,10 @@ class ExpenseController extends Controller
      */
     public function show(Expense $expense)
     {
-        //
+      return response()->json([
+        'success' => true,
+        'data' => $expense->fresh(['user']),
+      ]);
     }
 
     /**

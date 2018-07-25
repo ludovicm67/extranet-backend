@@ -36,7 +36,10 @@ class LeaveController extends Controller
      */
     public function show(Leave $leave)
     {
-        //
+      return response()->json([
+        'success' => true,
+        'data' => $leave->fresh(['user']),
+      ]);
     }
 
     /**
