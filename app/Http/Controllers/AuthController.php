@@ -77,7 +77,46 @@ class AuthController extends Controller
    */
   public function refresh()
   {
-    return $this->respondWithToken(auth()->refresh());
+    // check token
+    try {
+      JWTAuth::parseToken();
+      $token = JWTAuth::getToken();
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'code' => 401,
+        'message' => 'missing or badly formatted token',
+      ], 401);
+    }
+
+    try {
+      $token = JWTAuth::refresh($token);
+      JWTAuth::setToken($token);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'code' => 401,
+        'message' => 'expired token',
+      ], 401);
+    }
+
+    try {
+      $user = JWTAuth::authenticate($token);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'code' => 401,
+        'message' => 'expired token',
+      ], 401);
+    }
+
+    // return new token
+    return response()->json([
+      'success' => true,
+      'data' => [
+        'token' => $token,
+      ],
+    ]);
   }
 
   /**

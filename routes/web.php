@@ -12,6 +12,7 @@ Route::group(['middleware' => 'api'], function () {
   Route::get('cron/sellsy_invoices', 'CronController@sellsy_invoices')
         ->name('cron.sellsy_invoices');
 
+  Route::get('auth/refresh', 'AuthController@refresh')->name('auth.refresh');
   Route::post('auth/login', 'AuthController@login')->name('auth.login');
   Route::post('password/reset', 'UserController@resetPassword')
         ->name('password.reset');
