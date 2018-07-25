@@ -14,7 +14,10 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        //
+      return response()->json([
+        'success' => true,
+        'data' => Expense::with('user')->get(),
+      ]);
     }
 
     /**
