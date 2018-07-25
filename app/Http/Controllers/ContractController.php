@@ -62,6 +62,9 @@ class ContractController extends Controller
      */
     public function destroy(Contract $contract)
     {
-        //
+      $contract->delete();
+      return response()->json([
+        'success' => true,
+      ]);
     }
 }
