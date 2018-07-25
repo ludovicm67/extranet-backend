@@ -59,6 +59,10 @@ class LeaveController extends Controller
      */
     public function destroy(Leave $leave)
     {
-        //
+      $leave->delete();
+
+      return response()->json([
+        'success' => true,
+      ]);
     }
 }
