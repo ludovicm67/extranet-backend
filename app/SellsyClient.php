@@ -130,4 +130,8 @@ class SellsyClient extends Model
       ->whereNull('sellsy_orders.id')
       ->orderBy('displayedDate', 'desc');
   }
+
+  public function projects() {
+    return $this->hasMany(Project::class, 'client_id', 'id');
+  }
 }
