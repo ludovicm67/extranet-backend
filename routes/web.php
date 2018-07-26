@@ -49,6 +49,19 @@ Route::group(['middleware' => 'api'], function () {
     ]);
 
     Route::get('auth/logout', 'AuthController@logout')->name('auth.logout');
+
+
+    Route::options('{all}', function () {
+      $response = Response::make('');
+
+      $response->header('Access-Control-Allow-Origin', '*');
+      $response->header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+      $response->header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+      $response->header('X-Content-Type-Options', 'nosniff');
+      $response->header('Access-Control-Allow-Credentials', 'true');
+
+      return $response;
+    });
   });
 
 });
