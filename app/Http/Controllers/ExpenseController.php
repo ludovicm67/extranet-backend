@@ -46,7 +46,7 @@ class ExpenseController extends Controller
 
       $file = $request->file('file');
       if (!empty($file)) {
-        $file = str_replace('public/', 'storage/', $file->store('public/uploads/expenses/' . date('Y') . '/' . date('n')));
+        $file = str_replace('public/', '', $file->store('public/expenses/' . date('Y') . '/' . date('n')));
       }
 
       Expense::create([
