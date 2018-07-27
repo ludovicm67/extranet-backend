@@ -256,6 +256,9 @@ class UserController extends Controller
       $user = User::where('email', $request->email)->first();
 
       if (empty($request->token)) {
+        // we remove all previous entries for this user
+        $pass = Pass::where('user_id', $user->id)->delete();
+
         // we generate a token, create a DB entry and send the mail
         $token = explode('-', Uuid::uuid4()->toString())[1];
         $pass = Pass::create([
