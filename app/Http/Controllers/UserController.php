@@ -26,6 +26,14 @@ class UserController extends Controller
       ]);
     }
 
+    public function team()
+    {
+      return response()->json([
+        'success' => true,
+        'data' => User::with(['leave'])->get(),
+      ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

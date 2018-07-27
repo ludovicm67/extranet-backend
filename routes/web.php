@@ -49,6 +49,7 @@ Route::group(['middleware' => 'api'], function () {
     ]);
 
     Route::get('auth/logout', 'AuthController@logout')->name('auth.logout');
+    Route::get('team', 'UserController@team')->name('users.team');
 
 
     Route::options('{all}', function () {
