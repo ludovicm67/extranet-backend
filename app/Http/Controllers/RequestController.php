@@ -35,7 +35,7 @@ class RequestController extends Controller
     $req = DB::table('expenses')
       ->select(
         'expenses.id',
-        DB::raw("'expense' as request_type"),
+        DB::raw("'expenses' as request_type"),
         'expenses.user_id',
         'users.firstname',
         'users.lastname',
