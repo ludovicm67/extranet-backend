@@ -88,7 +88,40 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, Expense $expense)
     {
-        //
+      $validator = Validator::make($request->all(), [
+        'type' => 'required|string',
+        'month' => 'required|integer|min:1|max:12',
+        'year' => 'required|integer|min:1900|max:2222',
+        'amount' => 'required|numeric|min:0',
+        'file' => 'nullable|file',
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json([
+          'success' => false,
+          'errors' => $validator->errors()->all(),
+        ], 400);
+      }
+
+      $file = $request->file('file');
+      if (!empty($file)) {
+        $file = str_replace('public/', '', $file->store('public/expenses/' . date('Y') . '/' . date('n')));
+      }
+
+      $expense->update([
+        'user_id' => auth()->user()->id,
+        'accepted' => 0,
+        'file' => $file,
+        'details' => $request->details,
+        'year' => $request->year,
+        'month' => $request->month,
+        'amount' => $request->amount,
+        'type' => $request->type,
+      ]);
+
+      return response()->json([
+        'success' => true,
+      ]);
     }
 
     /**
