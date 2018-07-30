@@ -20,6 +20,7 @@ class RequestController extends Controller
         'leave.accepted',
         'leave.details',
         'leave.created_at',
+        'leave.updated_at',
         'leave.reason as category',
 
         'leave.start as leave_start',
@@ -44,6 +45,7 @@ class RequestController extends Controller
         'expenses.accepted',
         'expenses.details',
         'expenses.created_at',
+        'expenses.updated_at',
         'expenses.type as category',
 
         DB::raw('NULL as leave_start'),
@@ -57,7 +59,7 @@ class RequestController extends Controller
       ->join('users', 'users.id', '=', 'user_id')
       ->unionAll($leave)
       ->orderByRaw('CASE accepted WHEN 0 THEN 1 WHEN 1 THEN 2 WHEN -1 THEN 3 END', 'asc')
-      ->orderBy('created_at', 'desc');
+      ->orderBy('updated_at', 'desc');
 
     return response()->json([
       'success' => true,
