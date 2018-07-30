@@ -70,6 +70,10 @@ class LeaveController extends Controller
         'end_time' => $request->end_time,
         'reason' => $request->reason,
       ]);
+
+      return response()->json([
+        'success' => true,
+      ]);
     }
 
     /**

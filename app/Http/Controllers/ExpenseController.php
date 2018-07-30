@@ -59,6 +59,10 @@ class ExpenseController extends Controller
         'amount' => $request->amount,
         'type' => $request->type,
       ]);
+
+      return response()->json([
+        'success' => true,
+      ]);
     }
 
     /**
