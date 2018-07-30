@@ -23,6 +23,8 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('users/me', 'AuthController@me')
           ->name('users.me');
 
+    Route::get('requests', 'RequestController@index')->name('requests.index');
+
     Route::post('projects/{project}/fav', 'ProjectController@fav')
           ->name('projects.fav');
     Route::post('projects/{project}/unfav', 'ProjectController@unfav')
