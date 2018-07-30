@@ -25,7 +25,7 @@ class RequestController extends Controller
 
         'leave.start as leave_start',
         'leave.end as leave_end',
-        'leave.days as leave_days',
+        'leave.days as amount',
 
         DB::raw('NULL as expense_month'),
         DB::raw('NULL as expense_year'),
@@ -54,7 +54,7 @@ class RequestController extends Controller
 
         'expenses.month as expense_month',
         'expenses.year as expense_year',
-        'expenses.amount as expense_amount'
+        'expenses.amount as amount'
       )
       ->join('users', 'users.id', '=', 'user_id')
       ->unionAll($leave)
