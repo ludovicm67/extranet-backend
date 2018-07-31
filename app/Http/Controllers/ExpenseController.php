@@ -148,4 +148,14 @@ class ExpenseController extends Controller
         'success' => true,
       ]);
     }
+
+    public function reject(Expense $expense) {
+      $expense->update([
+        'accepted' => -1,
+      ]);
+
+      return response()->json([
+        'success' => true,
+      ]);
+    }
 }
