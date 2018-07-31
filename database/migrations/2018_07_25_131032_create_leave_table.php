@@ -24,7 +24,7 @@ class CreateLeaveTable extends Migration
             $table->dateTime('end')->useCurrent();
             $table->unsignedInteger('start_time')->default(9);
             $table->unsignedInteger('end_time')->default(18);
-            $table->float('days')->default(0); // @DEPRECATED
+            $table->float('days')->default(0);
             $table->string('reason')->default('Autre');
 
             $table->timestamps();

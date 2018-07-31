@@ -5,9 +5,25 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Leave;
 use Illuminate\Http\Request;
+use ludovicm67\SuperDate\Date;
 
 class LeaveController extends Controller
 {
+
+    private function calcNbDays($start, $end) {
+      if (empty($start) || empty($end)) {
+        return 0;
+      }
+      $days = (new Date($start))->allDaysTo($end);
+      $workingDays = array_filter($days, function ($d) {
+        return !$d->isHoliday() && !$d->isWeekend();
+      });
+      if (empty($workingDays)) {
+        return 0;
+      }
+      return count($workingDays);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -59,6 +75,24 @@ class LeaveController extends Controller
         strtotime($request->end . ' ' . $request->end_time . ':00:00')
       );
 
+      if ($endDate < $startDate) {
+        return response()->json([
+          'success' => false,
+          'messsage' => 'end date cannot be before start date',
+        ], 400);
+      }
+
+      $days = $this->calcNbDays($startDate, $endDate);
+      if ($request->start_time > 9) {
+        $days -= .5;
+      }
+      if ($request->end_time < 18) {
+        $days -= .5;
+      }
+      if ($days < 0) {
+        $days = 0;
+      }
+
       Leave::create([
         'user_id' => auth()->user()->id,
         'accepted' => 0,
@@ -69,6 +103,7 @@ class LeaveController extends Controller
         'end' => $endDate,
         'end_time' => $request->end_time,
         'reason' => $request->reason,
+        'days' => $days,
       ]);
 
       return response()->json([
@@ -118,6 +153,8 @@ class LeaveController extends Controller
       $file = $request->file('file');
       if (!empty($file)) {
         $file = str_replace('public/', '', $file->store('public/leave/' . date('Y') . '/' . date('n')));
+      } else {
+        $file = $leave->file;
       }
 
       $startDate = date(
@@ -129,9 +166,25 @@ class LeaveController extends Controller
         strtotime($request->end . ' ' . $request->end_time . ':00:00')
       );
 
+      if ($endDate < $startDate) {
+        return response()->json([
+          'success' => false,
+          'messsage' => 'end date cannot be before start date',
+        ], 400);
+      }
+
+      $days = $this->calcNbDays($startDate, $endDate);
+      if ($request->start_time > 9) {
+        $days -= .5;
+      }
+      if ($request->end_time < 18) {
+        $days -= .5;
+      }
+      if ($days < 0) {
+        $days = 0;
+      }
+
       $leave->update([
-        'user_id' => auth()->user()->id,
-        'accepted' => 0,
         'file' => $file,
         'details' => $request->details,
         'start' => $startDate,
@@ -139,6 +192,7 @@ class LeaveController extends Controller
         'end' => $endDate,
         'end_time' => $request->end_time,
         'reason' => $request->reason,
+        'days' => $days,
       ]);
 
       return response()->json([

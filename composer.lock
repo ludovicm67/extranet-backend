@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e8929f058eca162c5c76cf0b2f6598c",
+    "content-hash": "2224314ba8559138e938b06590d76810",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1239,6 +1239,39 @@
                 }
             ],
             "time": "2018-07-11T14:01:48+00:00"
+        },
+        {
+            "name": "ludovicm67/superdate",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ludovicm67/php-superdate.git",
+                "reference": "bc982d6c368a89325ad9d4a61f268c8046c48801"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ludovicm67/php-superdate/zipball/bc982d6c368a89325ad9d4a61f268c8046c48801",
+                "reference": "bc982d6c368a89325ad9d4a61f268c8046c48801",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ludovicm67\\SuperDate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ludovicm67",
+                    "email": "ludovicmuller1@gmail.com"
+                }
+            ],
+            "description": "Nice methods to know if the specified date is on a weekend/weekday or holiday (for Alsace, France), and some other cool stuff",
+            "time": "2018-07-31T10:05:35+00:00"
         },
         {
             "name": "monolog/monolog",

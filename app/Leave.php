@@ -9,7 +9,7 @@ class Leave extends Model
   protected $table = 'leave';
   protected $fillable = [
     'user_id', 'accepted', 'file', 'details',
-    'start', 'end', 'start_time', 'end_time', 'reason'
+    'start', 'end', 'start_time', 'end_time', 'reason', 'days',
   ];
 
   public function user() {
