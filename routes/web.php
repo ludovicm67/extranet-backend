@@ -25,6 +25,15 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::get('requests', 'RequestController@index')->name('requests.index');
 
+    Route::post('leave/{leave}/accept', 'LeaveController@accept')
+          ->name('leave.accept');
+    Route::post('leave/{leave}/reject', 'LeaveController@reject')
+          ->name('leave.reject');
+    Route::post('expenses/{expense}/accept', 'LeaveController@accept')
+          ->name('expenses.accept');
+    Route::post('expenses/{expense}/reject', 'LeaveController@reject')
+          ->name('expenses.reject');
+
     Route::post('projects/{project}/fav', 'ProjectController@fav')
           ->name('projects.fav');
     Route::post('projects/{project}/unfav', 'ProjectController@unfav')
@@ -64,7 +73,7 @@ Route::group(['middleware' => 'api'], function () {
       $response->header('Access-Control-Allow-Credentials', 'true');
 
       return $response;
-    });
+    })->name('options');
   });
 
 });
