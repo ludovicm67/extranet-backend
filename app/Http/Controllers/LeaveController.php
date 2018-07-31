@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Storage;
 use Validator;
 use App\Leave;
 use Illuminate\Http\Request;
@@ -9,7 +10,6 @@ use ludovicm67\SuperDate\Date;
 
 class LeaveController extends Controller
 {
-
     private function calcNbDays($start, $end) {
       if (empty($start) || empty($end)) {
         return 0;
@@ -22,6 +22,14 @@ class LeaveController extends Controller
         return 0;
       }
       return count($workingDays);
+    }
+
+    private function deleteFile($file) {
+      if (is_null($file)) {
+        return;
+      }
+
+      Storage::delete('/public/' . $file);
     }
 
     /**
@@ -152,6 +160,7 @@ class LeaveController extends Controller
 
       $file = $request->file('file');
       if (!empty($file)) {
+        $this->deleteFile($leave->file);
         $file = str_replace('public/', '', $file->store('public/leave/' . date('Y') . '/' . date('n')));
       } else {
         $file = $leave->file;
@@ -208,6 +217,7 @@ class LeaveController extends Controller
      */
     public function destroy(Leave $leave)
     {
+      $this->deleteFile($leave->file);
       $leave->delete();
 
       return response()->json([

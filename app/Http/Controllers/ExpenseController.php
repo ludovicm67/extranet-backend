@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Storage;
 use Validator;
 use App\Expense;
 use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
 {
+    private function deleteFile($file) {
+      if (is_null($file)) {
+        return;
+      }
+
+      Storage::delete('/public/' . $file);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -105,7 +114,10 @@ class ExpenseController extends Controller
 
       $file = $request->file('file');
       if (!empty($file)) {
+        $this->deleteFile($expense->file);
         $file = str_replace('public/', '', $file->store('public/expenses/' . date('Y') . '/' . date('n')));
+      } else {
+        $file = $expense->file;
       }
 
       $expense->update([
@@ -132,6 +144,7 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
+      $this->deleteFile($expense->file);
       $expense->delete();
 
       return response()->json([
