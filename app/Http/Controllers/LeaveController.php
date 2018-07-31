@@ -82,7 +82,7 @@ class LeaveController extends Controller
         ], 400);
       }
 
-      $days = $this->calcNbDays($startDate, $endDate);
+      $days = $this->calcNbDays($request->start, $request->end);
       if ($request->start_time > 9) {
         $days -= .5;
       }
