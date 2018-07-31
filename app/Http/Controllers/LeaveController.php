@@ -214,4 +214,14 @@ class LeaveController extends Controller
         'success' => true,
       ]);
     }
+
+    public function accept(Leave $leave) {
+      $leave->update([
+        'accepted' => 1,
+      ]);
+
+      return response()->json([
+        'success' => true,
+      ]);
+    }
 }
