@@ -29,9 +29,9 @@ Route::group(['middleware' => 'api'], function () {
           ->name('leave.accept');
     Route::post('leave/{leave}/reject', 'LeaveController@reject')
           ->name('leave.reject');
-    Route::post('expenses/{expense}/accept', 'LeaveController@accept')
+    Route::post('expenses/{expense}/accept', 'ExpenseController@accept')
           ->name('expenses.accept');
-    Route::post('expenses/{expense}/reject', 'LeaveController@reject')
+    Route::post('expenses/{expense}/reject', 'ExpenseController@reject')
           ->name('expenses.reject');
 
     Route::post('projects/{project}/fav', 'ProjectController@fav')
