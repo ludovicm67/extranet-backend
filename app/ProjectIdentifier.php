@@ -10,4 +10,10 @@ class ProjectIdentifier extends Model
   protected $fillable = [
     'project_id', 'identifier_id', 'value', 'confidential'
   ];
+
+  protected $with = ['type'];
+
+  public function type() {
+    return $this->hasOne(\App\Identifier::class, 'id', 'identifier_id');
+  }
 }

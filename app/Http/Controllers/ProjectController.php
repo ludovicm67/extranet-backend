@@ -11,6 +11,8 @@ use App\ProjectTag;
 use App\ProjectUrl;
 use App\ProjectFavorite;
 use App\Tag;
+use App\Identifier;
+use App\ProjectIdentifier;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -252,6 +254,36 @@ class ProjectController extends Controller
       return response()->json([
         'success' => true,
         'data' => $project->fresh(['identifiers']),
+      ]);
+    }
+
+    public function newIdentifier(Request $request, Project $project) {
+      $identifierId = null;
+
+      if (!empty($request->identifier_id)) {
+        $identifier = Identifier::find($request->identifier_id);
+
+         // if no corresponding identifier was found, create one
+        if (empty($identifier)) {
+          $identifier = Identifier::where('name', $request->identifier_id)->first();
+          if (empty($identifier)) {
+            $identifier = Identifier::create([
+              'name' => $request->identifier_id,
+            ]);
+          }
+        }
+        $identifierId = $identifier->id;
+      }
+
+      ProjectIdentifier::create([
+        'project_id' => $project->id,
+        'identifier_id' => $identifierId,
+        'value' => $request->value,
+        'confidential' => ($request->confidential == 1 ? 1 : 0),
+      ]);
+
+      return response()->json([
+        'success' => true,
       ]);
     }
 }
