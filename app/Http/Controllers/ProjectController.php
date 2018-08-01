@@ -287,6 +287,35 @@ class ProjectController extends Controller
       ]);
     }
 
+    public function updateIdentifier(Request $request, Projectidentifier $project_identifier) {
+      $identifierId = null;
+
+      if (!empty($request->identifier_id)) {
+        $identifier = Identifier::find($request->identifier_id);
+
+         // if no corresponding identifier was found, create one
+        if (empty($identifier)) {
+          $identifier = Identifier::where('name', $request->identifier_id)->first();
+          if (empty($identifier)) {
+            $identifier = Identifier::create([
+              'name' => $request->identifier_id,
+            ]);
+          }
+        }
+        $identifierId = $identifier->id;
+      }
+
+      $project_identifier->update([
+        'identifier_id' => $identifierId,
+        'value' => $request->value,
+        'confidential' => ($request->confidential == 1 ? 1 : 0),
+      ]);
+
+      return response()->json([
+        'success' => true,
+      ]);
+    }
+
     public function deleteIdentifier(Projectidentifier $project_identifier) {
       $project_identifier->delete();
 
