@@ -33,6 +33,9 @@ Route::group(['middleware' => 'api'], function () {
     Route::match(['PUT', 'PATCH'], 'project_identifier/{project_identifier}', 'ProjectController@updateIdentifier')->name('projects.updateIdentifier');
     Route::delete('project_identifier/{project_identifier}', 'ProjectController@deleteIdentifier')->name('projects.deleteIdentifier');
 
+    Route::get('overtime/{user}', 'OvertimeController@get')->name('overtime.get');
+    Route::match(['PUT', 'PATCH', 'POST'], 'overtime/{user}', 'OvertimeController@set')->name('overtime.set');
+
     Route::model('client', \App\SellsyClient::class);
     Route::model('sellsy_client', \App\SellsyClient::class);
     Route::apiResources([
