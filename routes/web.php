@@ -23,6 +23,8 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('users/me', 'AuthController@me')
           ->name('users.me');
 
+    Route::get('pdf/compta', 'PDFController@compta')->name('pdf.compta');
+
     Route::get('requests', 'RequestController@index')->name('requests.index');
 
     Route::post('leave/{leave}/accept', 'LeaveController@accept')
