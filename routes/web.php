@@ -29,6 +29,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('projects/{project}/unfav', 'ProjectController@unfav')->name('projects.unfav');
     Route::get('projects/{project}/identifiers', 'ProjectController@identifiers')->name('projects.identifiers');
     Route::post('projects/{project}/identifiers', 'ProjectController@newIdentifier')->name('projects.newIdentifier');
+    Route::delete('project_identifier/{project_identifier}', 'ProjectController@deleteIdentifier')->name('projects.deleteIdentifier');
 
     Route::model('client', \App\SellsyClient::class);
     Route::model('sellsy_client', \App\SellsyClient::class);

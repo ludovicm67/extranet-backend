@@ -286,4 +286,12 @@ class ProjectController extends Controller
         'success' => true,
       ]);
     }
+
+    public function deleteIdentifier(Projectidentifier $project_identifier) {
+      $project_identifier->delete();
+
+      return response()->json([
+        'success' => true,
+      ]);
+    }
 }
