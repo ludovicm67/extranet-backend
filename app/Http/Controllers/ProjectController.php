@@ -294,4 +294,11 @@ class ProjectController extends Controller
         'success' => true,
       ]);
     }
+
+    public function showIdentifier(Projectidentifier $project_identifier) {
+      return response()->json([
+        'success' => true,
+        'data' => $project_identifier,
+      ]);
+    }
 }
