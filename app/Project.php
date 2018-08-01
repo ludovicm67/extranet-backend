@@ -34,6 +34,10 @@ class Project extends Model
     return $this->hasMany('App\ProjectUrl');
   }
 
+  public function identifiers() {
+    return $this->hasMany('App\ProjectIdentifier');
+  }
+
   public function client() {
     return $this->hasOne('App\SellsyClient', 'id', 'client_id');
   }

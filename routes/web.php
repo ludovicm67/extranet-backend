@@ -2,9 +2,6 @@
 
 Route::group(['middleware' => 'api'], function () {
 
-  // @TODO: move it in the auth middleware!
-  Route::get('projects/{project}/identifiers', 'ProjectController@identifiers')->name('projects.identifiers');
-
   // routes for cron jobs
   Route::get('cron/sellsy_clients', 'CronController@sellsy_clients')->name('cron.sellsy_clients');
   Route::get('cron/sellsy_contacts', 'CronController@sellsy_contacts')->name('cron.sellsy_contacts');
@@ -30,6 +27,7 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::post('projects/{project}/fav', 'ProjectController@fav')->name('projects.fav');
     Route::post('projects/{project}/unfav', 'ProjectController@unfav')->name('projects.unfav');
+    Route::get('projects/{project}/identifiers', 'ProjectController@identifiers')->name('projects.identifiers');
 
     Route::model('client', \App\SellsyClient::class);
     Route::model('sellsy_client', \App\SellsyClient::class);

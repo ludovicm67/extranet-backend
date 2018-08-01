@@ -247,4 +247,11 @@ class ProjectController extends Controller
         'success' => true,
       ]);
     }
+
+    public function identifiers(Project $project) {
+      return response()->json([
+        'success' => true,
+        'data' => $project->fresh(['identifiers']),
+      ]);
+    }
 }
