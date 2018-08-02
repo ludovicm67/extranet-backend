@@ -8,7 +8,13 @@ use Illuminate\Http\Request;
 
 class OvertimeController extends Controller
 {
+  private function cleanOvertimes() {
+    Overtime::where('volume', 0)->whereNull('details')->delete();
+  }
+
   public function get(Request $request, User $user) {
+    $this->cleanOvertimes();
+
     $year = intval($request->input('year', date('Y')));
     $month = intval($request->input('month', date('n')));
     if ($month < 1) {
@@ -25,21 +31,19 @@ class OvertimeController extends Controller
       ->where('month', $month)
       ->first();
 
-    if (empty($overtime)) {
-      $overtime = Overtime::create([
-        'user_id' => $user->id,
-        'year' => $year,
-        'month' => $month,
-      ]);
+    if (!empty($overtime)) {
+      $overtime = $overtime->fresh(['user']);
     }
 
     return response()->json([
       'success' => true,
-      'data' => $overtime->fresh(['user']),
+      'data' => $overtime,
     ]);
   }
 
   public function set(Request $request, User $user) {
+    $this->cleanOvertimes();
+
     $year = intval($request->input('year', date('Y')));
     $month = intval($request->input('month', date('n')));
     if ($month < 1) {
