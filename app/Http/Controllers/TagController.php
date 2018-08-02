@@ -59,7 +59,7 @@ class TagController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => $tag
+        'data' => $tag->fresh(['projects']),
       ]);
     }
 
