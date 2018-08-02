@@ -35,7 +35,7 @@ class OvertimeController extends Controller
 
     return response()->json([
       'success' => true,
-      'data' => $overtime,
+      'data' => $overtime->fresh(['user']),
     ]);
   }
 
