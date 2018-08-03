@@ -73,4 +73,8 @@ class User extends Authenticatable implements JWTSubject
     public function overtime() {
       return $this->hasMany(\App\Overtime::class);
     }
+
+    public function documents() {
+      return $this->hasMany(\App\Document::class)->orderBy('date', 'desc');
+    }
 }
