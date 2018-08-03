@@ -1,5 +1,7 @@
 <?php
 
+Route::get('contacts/export', 'ContactController@export')->name('contacts.export');
+
 // routes for cron jobs
 Route::get('cron/sellsy_clients', 'CronController@sellsy_clients')->name('cron.sellsy_clients');
 Route::get('cron/sellsy_contacts', 'CronController@sellsy_contacts')->name('cron.sellsy_contacts');

@@ -14,4 +14,8 @@ class Contact extends Model
   public function type() {
     return $this->hasOne(\App\Type::class, 'id', 'type_id');
   }
+
+  public function projects() {
+    return $this->belongsToMany('App\Project', 'project_contacts');
+  }
 }

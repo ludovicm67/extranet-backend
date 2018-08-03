@@ -55,7 +55,7 @@ class ContactController extends Controller
       if (!empty($request->type_id)) {
         $type = Type::find($request->type_id);
 
-         // if no corresponding type was found, create one
+        // if no corresponding type was found, create one
         if (empty($type)) {
           $type = Type::where('name', $request->type_id)->first();
           if (empty($type)) {
@@ -167,6 +167,27 @@ class ContactController extends Controller
 
       return response()->json([
         'success' => true,
+      ]);
+    }
+
+    public function export(Request $request) {
+      $type = intval($request->type); // type id
+      $tag = intval($request->tag); // tag id
+      $value = trim($request->value); // tag value
+
+      $contacts = Contact::with([
+        'type',
+        'projects',
+        'projects.tags',
+      ]);
+
+      if (!empty($type)) {
+        $contacts->where('type_id', $type);
+      }
+
+      return response()->json([
+        'success' => true,
+        'data' => $contacts->get(),
       ]);
     }
 }
