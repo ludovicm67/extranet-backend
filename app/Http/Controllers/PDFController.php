@@ -365,9 +365,8 @@ class PDFController extends Controller
     $dt = new \DateTime("$year-$month");
 
     $data = $this->getData($year, $month);
-    dd($data);
 
-    $content = 'compta';
+    $content = view('pdf.compta', $data);
 
     $dompdf = new Dompdf();
     $dompdf->loadHtml($content);
