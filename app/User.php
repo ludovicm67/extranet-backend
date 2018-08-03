@@ -65,4 +65,12 @@ class User extends Authenticatable implements JWTSubject
     public function leave() {
       return $this->hasMany(\App\Leave::class);
     }
+
+    public function expenses() {
+      return $this->hasMany(\App\Expense::class);
+    }
+
+    public function overtime() {
+      return $this->hasMany(\App\Overtime::class);
+    }
 }
