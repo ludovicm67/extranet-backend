@@ -39,7 +39,7 @@ class AuthController extends Controller
   {
     return response()->json([
       'success' => true,
-      'data' => auth()->user()
+      'data' => auth()->user()->fresh(['documents'])
     ]);
   }
 
