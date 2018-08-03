@@ -18,6 +18,21 @@ class PDFController extends Controller
   private $startHour = 9;
   private $endHour = 18;
 
+  private $months = [
+    1 => 'Janvier',
+    2 => 'Février',
+    3 => 'Mars',
+    4 => 'Avril',
+    5 => 'Mai',
+    6 => 'Juin',
+    7 => 'Juillet',
+    8 => 'Août',
+    9 => 'Septembre',
+    10 => 'Octobre',
+    11 => 'Novembre',
+    12 => 'Décembre'
+  ];
+
   public function __construct() {
     $name = '\n\a\v\e\t\t\e\-';
     $appName = strtolower(config('app.name'));
@@ -219,12 +234,15 @@ class PDFController extends Controller
             switch (mb_strtolower($o->reason)) {
               case 'congé':
                 $a['conges'] += $nbDays;
+                $a['details'][] = $this->writeDates('congés', $month, $year, $o->start, $o->end, false, true);
                 return $a;
               case 'maladie':
                 $a['maladie'] += $nbDays;
+                $a['details'][] = $this->writeDates('maladie', $month, $year, $o->start, $o->end, false, true);
                 return $a;
               case 'autre':
                 $a['autre'] += $nbDays;
+                $a['details'][] = $this->writeDates('autre', $month, $year, $o->start, $o->end, false, true);
                 return $a;
               default:
                 return $a;
@@ -233,11 +251,14 @@ class PDFController extends Controller
             'conges' => 0,
             'maladie' => 0,
             'autre' => 0,
+            'details' => [],
           ]);
 
           $conges = $arr['conges'];
           $maladie = $arr['maladie'];
           $autre = $arr['autre'];
+          if (!empty($details)) $details .= ', ';
+          $details .= implode(', ', $arr['details']);
         }
 
         if (!empty($line->user) && !empty($line->user->expenses)) {
@@ -262,7 +283,8 @@ class PDFController extends Controller
       // hello, dear intern! :-)
       if (mb_strtolower($line->type) == 'stage') {
         $nbDays = $this->getNbDays($year, $month, $line->start_at, $line->end_at, false);
-        $details .= $nbDays . ' jours de présence (stage).';
+        if (!empty($details)) $details .= ', ';
+        $details .= $nbDays . ' jours de présence (stage)';
       }
 
       // clean values
@@ -320,6 +342,14 @@ class PDFController extends Controller
     return $this->cleanLines($year, $month, $contracts);
   }
 
+  private function getData($year, $month) {
+    return [
+      'name' => config('app.name'),
+      'period' => $this->months[$month] . ' ' . $year,
+      'lines' => $lines = $this->getLines($year, $month),
+    ];
+  }
+
   public function compta(Request $request) {
     // get month and year params
     $year = intval($request->input('year', date('Y')));
@@ -334,7 +364,8 @@ class PDFController extends Controller
     }
     $dt = new \DateTime("$year-$month");
 
-    $lines = $this->getLines($year, $month);
+    $data = $this->getData($year, $month);
+    dd($data);
 
     $content = 'compta';
 
