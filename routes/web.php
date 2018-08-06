@@ -10,6 +10,8 @@ Route::get('auth/refresh', 'AuthController@refresh')->name('auth.refresh');
 Route::post('auth/login', 'AuthController@login')->name('auth.login');
 Route::post('password/reset', 'UserController@resetPassword')->name('password.reset');
 
+Route::get('/ics', 'LeaveController@ics')->name('ics');
+
 Route::group(['middleware' => ['jwt.auth']], function() {
   Route::match(['PUT', 'PATCH'], 'users/me', 'UserController@updateMe')->name('users.update_me');
   Route::get('users/me', 'AuthController@me')->name('users.me');

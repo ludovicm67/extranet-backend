@@ -7,6 +7,8 @@ use Validator;
 use App\Leave;
 use Illuminate\Http\Request;
 use ludovicm67\SuperDate\Date;
+use Eluceo\iCal\Component\Calendar;
+use Eluceo\iCal\Component\Event;
 
 class LeaveController extends Controller
 {
@@ -247,6 +249,41 @@ class LeaveController extends Controller
 
       return response()->json([
         'success' => true,
+      ]);
+    }
+
+    public function ics() {
+      $leaves = Leave::with([
+        'user',
+      ])->where('accepted', '>=', 0)->get();
+
+      $calName = config('app.name');
+      $vCalendar = new Calendar($calName);
+      $vCalendar->setName($calName);
+      $vCalendar->setPublishedTTL('PT1H');
+
+      foreach ($leaves as $leave) {
+        $flags = [];
+        if ($leave->accepted != 1) {
+          $flags[] = '?';
+        }
+        $flags[] = mb_strtoupper($leave->reason);
+        if (empty($flags)) {
+          $flags = '';
+        } else {
+          $flags = '[' . implode('][', $flags) . '] ';
+        }
+
+        $vEvent = (new Event())
+          ->setDtStart(new \DateTime($leave->start))
+          ->setDtEnd(new \DateTime($leave->end))
+          ->setSummary($flags . $leave->user->firstname . ' ' . $leave->user->lastname);
+        $vCalendar->addComponent($vEvent);
+      }
+
+      return response($vCalendar->render())->withHeaders([
+        'Content-Type' => 'text/calendar; charset=utf-8',
+        'Content-Disposition' => 'attachment; filename="cal.ics"',
       ]);
     }
 }
