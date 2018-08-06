@@ -25,7 +25,7 @@ class LeaveController extends Controller
     }
 
     private function deleteFile($file) {
-      if (is_null($file)) {
+      if (empty($file)) {
         return;
       }
 
@@ -156,6 +156,11 @@ class LeaveController extends Controller
           'success' => false,
           'errors' => $validator->errors()->all(),
         ], 400);
+      }
+
+      if ($request->delete_file == 1) {
+        $this->deleteFile($leave->file);
+        $leave->file = null;
       }
 
       $file = $request->file('file');
