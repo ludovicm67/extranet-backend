@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
   protected $table = 'projects';
-  protected $attributes = ['favorited'];
   protected $appends = ['favorited'];
   protected $fillable = [
     'name', 'domain', 'client_id', 'next_action', 'end_at', 'parent_id',
