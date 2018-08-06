@@ -11,7 +11,7 @@ class Project extends Model
   protected $attributes = ['favorited'];
   protected $appends = ['favorited'];
   protected $fillable = [
-    'name', 'domain', 'client_id', 'next_action', 'end_at'
+    'name', 'domain', 'client_id', 'next_action', 'end_at', 'parent_id',
   ];
 
   public function contacts() {
@@ -43,6 +43,10 @@ class Project extends Model
 
   public function client() {
     return $this->hasOne('App\SellsyClient', 'id', 'client_id');
+  }
+
+  public function parent() {
+    return $this->hasOne('App\Project', 'id', 'parent_id');
   }
 
   public function getFavoritedAttribute() {
