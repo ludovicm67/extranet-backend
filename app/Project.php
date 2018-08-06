@@ -19,7 +19,10 @@ class Project extends Model
   }
 
   public function orders() {
-    return $this->belongsToMany('App\SellsyOrder', 'project_orders', 'project_id', 'order_id')->with('invoices');
+    return $this
+      ->belongsToMany('App\SellsyOrder', 'project_orders', 'project_id', 'order_id')
+      ->with('invoices')
+      ->orderBy('displayedDate', 'desc');
   }
 
   public function users() {
