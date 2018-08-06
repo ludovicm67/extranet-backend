@@ -184,17 +184,24 @@ class ContactController extends Controller
       if (!empty($type)) {
         $contacts->where('type_id', $type);
       }
+
       $contacts = $contacts->get();
 
       $res = [];
       foreach ($contacts as $c) {
         foreach ($c->projects as $p) {
           $p = json_decode(json_encode($p));
-          $tags = array_map(function ($t) {
+
+          $tagsId = array_map(function ($t) {
+            return $t->pivot->tag_id;
+          }, $p->tags);
+          $tagsValues = array_map(function ($t) {
             return $t->pivot->value;
           }, $p->tags);
 
-          if (!empty($value) && !in_array($value, $tags)) continue;
+          if (!empty($tag) && !in_array($tag, $tagsId, true)) continue;
+          if (!empty($value) && !in_array($value, $tagsValues, true)) continue;
+
           $type = $c->type;
           if (!empty($type)) $type = $c->type->name;
 
