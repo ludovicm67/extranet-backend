@@ -119,10 +119,10 @@ class DocumentController extends Controller
 
       $file = $request->file('file');
       if (!empty($file)) {
-        $this->deleteFile($leave->file);
+        $this->deleteFile($document->file);
         $file = str_replace('public/', '', $file->store('public/documents/' . date('Y') . '/' . date('n')));
       } else {
-        $file = $leave->file;
+        $file = $document->file;
       }
 
       $document->update([
