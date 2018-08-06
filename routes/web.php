@@ -1,7 +1,5 @@
 <?php
 
-Route::get('contacts/export', 'ContactController@export')->name('contacts.export');
-
 // routes for cron jobs
 Route::get('cron/sellsy_clients', 'CronController@sellsy_clients')->name('cron.sellsy_clients');
 Route::get('cron/sellsy_contacts', 'CronController@sellsy_contacts')->name('cron.sellsy_contacts');
@@ -24,6 +22,9 @@ Route::group(['middleware' => ['jwt.auth']], function() {
   Route::post('leave/{leave}/reject', 'LeaveController@reject')->name('leave.reject');
   Route::post('expenses/{expense}/accept', 'ExpenseController@accept')->name('expenses.accept');
   Route::post('expenses/{expense}/reject', 'ExpenseController@reject')->name('expenses.reject');
+
+  Route::get('contacts/export', 'ContactController@export')->name('contacts.export');
+  Route::get('contacts/csv', 'ContactController@csv')->name('contacts.csv');
 
   Route::post('projects/{project}/fav', 'ProjectController@fav')->name('projects.fav');
   Route::post('projects/{project}/unfav', 'ProjectController@unfav')->name('projects.unfav');

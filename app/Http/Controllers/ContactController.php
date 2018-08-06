@@ -170,7 +170,7 @@ class ContactController extends Controller
       ]);
     }
 
-    public function export(Request $request) {
+    public function exportData(Request $request) {
       $type = intval($request->type); // type id
       $tag = intval($request->tag); // tag id
       $value = trim($request->value); // tag value
@@ -184,10 +184,68 @@ class ContactController extends Controller
       if (!empty($type)) {
         $contacts->where('type_id', $type);
       }
+      $contacts = $contacts->get();
+
+      $res = [];
+      foreach ($contacts as $c) {
+        foreach ($c->projects as $p) {
+          $p = json_decode(json_encode($p));
+          $tags = array_map(function ($t) {
+            return $t->pivot->value;
+          }, $p->tags);
+
+          if (!empty($value) && !in_array($value, $tags)) continue;
+          $type = $c->type;
+          if (!empty($type)) $type = $c->type->name;
+
+          $uniqueKey = $c->id . '-' . $p->id;
+
+          $res[$uniqueKey] = (object) [
+            'mail' => $c->mail,
+            'name' => $c->name,
+            'phone' => $c->phone,
+            'address' => $c->address,
+            'project_name' => $p->name,
+            'project_domain' => $p->domain,
+            'type' => $type,
+          ];
+        }
+      }
+
+      return array_values($res);
+    }
+
+    public function export(Request $request) {
+      $data = $this->exportData($request);
 
       return response()->json([
         'success' => true,
-        'data' => $contacts->get(),
+        'data' => $data,
+      ]);
+    }
+
+    public function csv(Request $request) {
+      $data = $this->exportData($request);
+
+      ob_start();
+      $out = fopen('php://output', 'w');
+      foreach ($data as $contact) {
+        fputcsv($out, [
+          $contact->mail,
+          $contact->name,
+          $contact->phone,
+          $contact->address,
+          $contact->project_name,
+          $contact->project_domain,
+          $contact->type,
+        ]);
+      }
+      fclose($out);
+      $content = ob_get_clean();
+
+      return response($content)->withHeaders([
+        'Content-type' => 'text/plain',
+        'Content-Disposition' => 'attachment; filename=contacts.csv',
       ]);
     }
 }
