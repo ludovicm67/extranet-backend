@@ -109,6 +109,7 @@ class ProjectController extends Controller
     {
       $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
+        'parent_id' => 'nullable|exists:projects,id',
       ]);
 
       if ($validator->fails()) {
@@ -119,6 +120,7 @@ class ProjectController extends Controller
       }
 
       // fields that can be nullable
+      $parent = empty($request->parent_id) ? null : $request->parent_id;
       $domain = empty($request->domain) ? null : $request->domain;
       $clientId = empty($request->client_id) ? null : $request->client_id;
       $nextAction = empty($request->next_action) ? null : $request->next_action;
@@ -132,6 +134,7 @@ class ProjectController extends Controller
         'client_id' => $clientId,
         'next_action' => $nextAction,
         'end_at' => $endAt,
+        'parent_id' => $parent,
       ]);
 
       $this->createAssociations($request, $project);
@@ -152,7 +155,7 @@ class ProjectController extends Controller
       return response()->json([
         'success' => true,
         'data' => $project->fresh([
-          'users', 'orders', 'contacts', 'tags', 'urls', 'client'
+          'users', 'orders', 'contacts', 'tags', 'urls', 'client', 'parent',
         ]),
       ]);
     }
@@ -168,6 +171,7 @@ class ProjectController extends Controller
     {
       $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
+        'parent_id' => 'nullable|exists:projects,id',
       ]);
 
       if ($validator->fails()) {
@@ -185,6 +189,7 @@ class ProjectController extends Controller
       ProjectUrl::where('project_id', $project->id)->delete();
 
       // fields that can be nullable
+      $parent = empty($request->parent_id) ? null : $request->parent_id;
       $domain = empty($request->domain) ? null : $request->domain;
       $clientId = empty($request->client_id) ? null : $request->client_id;
       $nextAction = empty($request->next_action) ? null : $request->next_action;
@@ -198,6 +203,7 @@ class ProjectController extends Controller
         'client_id' => $clientId,
         'next_action' => $nextAction,
         'end_at' => $endAt,
+        'parent_id' => $parent,
       ]);
 
       $this->createAssociations($request, $project);
