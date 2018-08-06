@@ -201,10 +201,13 @@ class ContactController extends Controller
           $uniqueKey = $c->id . '-' . $p->id;
 
           $res[$uniqueKey] = (object) [
+            'key' => $uniqueKey,
+            'id' => $c->id,
             'mail' => $c->mail,
             'name' => $c->name,
             'phone' => $c->phone,
             'address' => $c->address,
+            'project_id' => $p->id,
             'project_name' => $p->name,
             'project_domain' => $p->domain,
             'type' => $type,
