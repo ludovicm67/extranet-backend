@@ -31,12 +31,15 @@ class SearchController extends Controller
 
 
     return response()->json([
-      'users' => $users,
-      'clients' => $clients,
-      'projects' => $projects,
-      'contacts' => $contacts,
-      'sellsy_contacts' => $sellsyContacts,
-      'tags' => $tags,
+      'success' => true,
+      'data' => [
+        'users' => $users,
+        'clients' => $clients,
+        'projects' => $projects,
+        'contacts' => $contacts,
+        'sellsy_contacts' => $sellsyContacts,
+        'tags' => $tags,
+      ]
     ]);
   }
 }
