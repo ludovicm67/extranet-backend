@@ -10,7 +10,7 @@ class Project extends Model
   protected $table = 'projects';
   protected $appends = ['favorited'];
   protected $fillable = [
-    'name', 'domain', 'client_id', 'next_action', 'end_at', 'parent_id',
+    'name', 'domain', 'client_id', 'next_action', 'end_at', 'parent_id', 'archived',
   ];
 
   public function contacts() {

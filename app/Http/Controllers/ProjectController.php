@@ -26,7 +26,26 @@ class ProjectController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => Project::orderBy('end_at', 'desc')->get()->sortByDesc('favorited')->values()->all(),
+        'data' => Project::orderBy('end_at', 'desc')
+                  ->where('archived', 0)->get()
+                  ->sortByDesc('favorited')->values()
+                  ->all(),
+      ]);
+    }
+
+    /**
+     * Display archived projects.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function archived()
+    {
+      return response()->json([
+        'success' => true,
+        'data' => Project::orderBy('end_at', 'desc')
+                  ->where('archived', 1)->get()
+                  ->sortByDesc('favorited')->values()
+                  ->all(),
       ]);
     }
 
@@ -293,7 +312,7 @@ class ProjectController extends Controller
       ]);
     }
 
-    public function updateIdentifier(Request $request, Projectidentifier $project_identifier) {
+    public function updateIdentifier(Request $request, ProjectIdentifier $project_identifier) {
       $identifierId = null;
 
       if (!empty($request->identifier_id)) {
@@ -322,7 +341,7 @@ class ProjectController extends Controller
       ]);
     }
 
-    public function deleteIdentifier(Projectidentifier $project_identifier) {
+    public function deleteIdentifier(ProjectIdentifier $project_identifier) {
       $project_identifier->delete();
 
       return response()->json([
@@ -330,7 +349,7 @@ class ProjectController extends Controller
       ]);
     }
 
-    public function showIdentifier(Projectidentifier $project_identifier) {
+    public function showIdentifier(ProjectIdentifier $project_identifier) {
       return response()->json([
         'success' => true,
         'data' => $project_identifier,
