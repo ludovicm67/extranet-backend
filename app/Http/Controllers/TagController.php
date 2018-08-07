@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Tag;
 use Illuminate\Http\Request;
-use Laravel\Scout\Searchable;
 
 class TagController extends Controller
 {
-  use Searchable;
     /**
      * Display a listing of the resource.
      *

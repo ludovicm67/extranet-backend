@@ -14,11 +14,9 @@ use App\Tag;
 use App\Identifier;
 use App\ProjectIdentifier;
 use Illuminate\Http\Request;
-use Laravel\Scout\Searchable;
 
 class ProjectController extends Controller
 {
-  use Searchable;
     /**
      * Display a listing of the resource.
      *

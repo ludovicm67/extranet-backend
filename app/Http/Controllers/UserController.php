@@ -10,11 +10,9 @@ use App\ResetPassword as Pass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Ramsey\Uuid\Uuid;
-use Laravel\Scout\Searchable;
 
 class UserController extends Controller
 {
-  use Searchable;
     /**
      * Display a listing of the resource.
      *

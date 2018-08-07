@@ -6,11 +6,9 @@ use Validator;
 use App\Contact;
 use App\Type;
 use Illuminate\Http\Request;
-use Laravel\Scout\Searchable;
 
 class ContactController extends Controller
 {
-  use Searchable;
     /**
      * Display a listing of the resource.
      *

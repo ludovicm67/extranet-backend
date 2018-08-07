@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Laravel\Scout\Searchable;
 use App\SellsyClient;
 use Illuminate\Http\Request;
 
 class SellsyClientController extends Controller
 {
-  use Searchable;
     /**
      * Display a listing of the resource.
      *
