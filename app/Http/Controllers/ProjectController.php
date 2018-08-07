@@ -355,4 +355,24 @@ class ProjectController extends Controller
         'data' => $project_identifier,
       ]);
     }
+
+    public function archive(Project $project) {
+      $project->update([
+        'archived' => 1,
+      ]);
+
+      return response()->json([
+        'success' => true,
+      ]);
+    }
+
+    public function unarchive(Project $project) {
+      $project->update([
+        'archived' => 0,
+      ]);
+
+      return response()->json([
+        'success' => true,
+      ]);
+    }
 }

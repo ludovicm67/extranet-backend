@@ -32,6 +32,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
   Route::post('projects/archived', 'ProjectController@archived')->name('projects.archived');
   Route::post('projects/{project}/fav', 'ProjectController@fav')->name('projects.fav');
   Route::post('projects/{project}/unfav', 'ProjectController@unfav')->name('projects.unfav');
+  Route::post('projects/{project}/archive', 'ProjectController@archive')->name('projects.archive');
+  Route::post('projects/{project}/unarchive', 'ProjectController@unarchive')->name('projects.unarchive');
   Route::get('projects/{project}/identifiers', 'ProjectController@identifiers')->name('projects.identifiers');
   Route::post('projects/{project}/identifiers', 'ProjectController@newIdentifier')->name('projects.newIdentifier');
   Route::get('project_identifier/{project_identifier}', 'ProjectController@showIdentifier')->name('projects.showIdentifier');
