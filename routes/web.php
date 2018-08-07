@@ -29,7 +29,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
   Route::get('contacts/export', 'ContactController@export')->name('contacts.export');
   Route::get('contacts/csv', 'ContactController@csv')->name('contacts.csv');
 
-  Route::post('projects/archived', 'ProjectController@archived')->name('projects.archived');
+  Route::get('projects/archived', 'ProjectController@archived')->name('projects.archived');
   Route::post('projects/{project}/fav', 'ProjectController@fav')->name('projects.fav');
   Route::post('projects/{project}/unfav', 'ProjectController@unfav')->name('projects.unfav');
   Route::post('projects/{project}/archive', 'ProjectController@archive')->name('projects.archive');
