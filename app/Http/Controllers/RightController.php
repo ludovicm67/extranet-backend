@@ -203,9 +203,9 @@ class RightController extends Controller
             'delete' => false,
             'checked' => []
           ],
-        'pay' =>
+        'documents' =>
           (object) [
-            'name' => 'Fiches de paie',
+            'name' => 'Documents (fiche de paie, ...)',
             'show' => true,
             'add' => true,
             'edit' => false,

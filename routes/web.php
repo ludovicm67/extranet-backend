@@ -13,6 +13,9 @@ Route::post('password/reset', 'UserController@resetPassword')->name('password.re
 Route::get('/ics', 'LeaveController@ics')->name('ics');
 
 Route::group(['middleware' => ['jwt.auth']], function() {
+  Route::get('/permissions', 'RightController@permissions')->name('permissions');
+  Route::get('/permissions/{role}', 'RightController@rolePermissions')->name('roles.permissions');
+
   Route::get('/search', 'SearchController@index')->name('search');
   Route::match(['PUT', 'PATCH'], 'users/me', 'UserController@updateMe')->name('users.update_me');
   Route::get('users/me', 'AuthController@me')->name('users.me');
