@@ -45,6 +45,16 @@ différentes migrations :
 php artisan migrate --database=DOMAIN --force
 ```
 
+Si la base de données était vide avant le lancement des migrations, un compte
+administrateur sera créé automatiquement. Les identifiants sont les suivants :
+
+  - adresse mail : admin@example.com
+
+  - mot de passe : admin
+
+Pensez à supprimer ce compte une fois, ou en tout cas à en changer les
+identifiants et le nom, pour des raisons de sécurité évidentes.
+
 Pour lancer le site **en local**, un simple coup de `php artisan serve` lancera
 un serveur de développement sur http://localhost:8000; s'il n'y a pas de domaine
 `localhost` configuré dans le fichier `config.yml`, il faudra juste penser
