@@ -216,9 +216,14 @@ class RightController extends Controller
     }
 
     public function permissions() {
+      $permissions = array_map(function ($e, $key) {
+        $e->id = $key;
+        return $e;
+      }, $this->permissions, array_keys($this->permissions));
+
       return response()->json([
         'success' => true,
-        'data' => $this->permissions,
+        'data' => $permissions,
       ]);
     }
 
@@ -250,6 +255,11 @@ class RightController extends Controller
           $permissions[$right->name]->checked[] = 'delete';
         }
       }
+
+      $permissions = array_map(function ($e, $key) {
+        $e->id = $key;
+        return $e;
+      }, $permissions, array_keys($permissions));
 
       return response()->json([
         'success' => true,
