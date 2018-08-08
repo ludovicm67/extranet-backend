@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "ludovicm67/laravel-multidomain": "^1.0",
         "ludovicm67/superdate": "^1.0",
+        "ludovicm67/url-explorer": "^1.0",
         "ramsey/uuid": "^3.7",
         "teknoo/sellsy-client": "^2.0",
         "tymon/jwt-auth": "^1.0"

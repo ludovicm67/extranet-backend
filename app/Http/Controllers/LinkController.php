@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use ludovicm67\Url\Explorer\Explorer;
 use App\Link;
 use Illuminate\Http\Request;
 
@@ -66,6 +67,14 @@ class LinkController extends Controller
 
       return response()->json([
         'success' => true,
+      ]);
+    }
+
+    public function preview(Request $request) {
+      $explorer = new Explorer($request->url);
+      return response()->json([
+        'success' => true,
+        'data' => $explorer->getResults(),
       ]);
     }
 }
