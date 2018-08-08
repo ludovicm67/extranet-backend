@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\User;
 use App\Role;
+use App\Team;
 use App\Mail\ResetPassword;
 use App\ResetPassword as Pass;
 use Illuminate\Http\Request;
@@ -64,6 +65,7 @@ class UserController extends Controller
       $userDefaultPage = strip_tags($request->default_page);
       $userIsAdmin = 0;
       $userRoleId = null;
+      $userTeamId = null;
 
       // if user is admin
       if ($request->role_id == -1) {
@@ -71,7 +73,7 @@ class UserController extends Controller
       } else if (!empty($request->role_id)) {
         $role = Role::find($request->role_id);
 
-         // if no corresponding role was found, create one
+        // if no corresponding role was found, create one
         if (empty($role)) {
           $role = Role::where('name', $request->role_id)->first();
           if (empty($role)) {
@@ -83,6 +85,21 @@ class UserController extends Controller
         $userRoleId = $role->id;
       }
 
+      if (!empty($request->team_id)) {
+        $team = Team::find($request->team_id);
+
+        // if no corresponding team was found, create one
+        if (empty($team)) {
+          $team = Team::where('name', $request->team_id)->first();
+          if (empty($team)) {
+            $team = Team::create([
+              'name' => $request->team_id,
+            ]);
+          }
+        }
+        $userTeamId = $team->id;
+      }
+
       User::create([
         'password' => $userPassword,
         'firstname' => $userFirstname,
@@ -91,6 +108,7 @@ class UserController extends Controller
         'default_page' => $userDefaultPage,
         'is_admin' => $userIsAdmin,
         'role_id' => $userRoleId,
+        'team_id' => $userTeamId,
       ]);
 
       return response()->json([
@@ -158,7 +176,7 @@ class UserController extends Controller
       } else {
         $role = Role::find($request->role_id);
 
-         // if no corresponding role was found, create one
+        // if no corresponding role was found, create one
         if (empty($role)) {
           $role = Role::where('name', $request->role_id)->first();
           if (empty($role)) {
@@ -172,6 +190,21 @@ class UserController extends Controller
         if (!$isMe) {
           $user->is_admin = 0;
         }
+      }
+
+      if (!empty($request->team_id)) {
+        $team = Team::find($request->team_id);
+
+        // if no corresponding team was found, create one
+        if (empty($team)) {
+          $team = Team::where('name', $request->team_id)->first();
+          if (empty($team)) {
+            $team = Team::create([
+              'name' => $request->team_id,
+            ]);
+          }
+        }
+        $user->team_id = $team->id;
       }
 
       $user->save();

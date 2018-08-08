@@ -15,10 +15,7 @@ class AddTeamIdToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
           $table->unsignedInteger('team_id')->nullable();
-          $table->foreign('team_id')
-                ->references('id')
-                ->on('teams')
-                ->onDelete('cascade');
+          $table->foreign('team_id')->references('id')->on('teams');
         });
     }
 

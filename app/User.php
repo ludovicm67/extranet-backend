@@ -23,6 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'is_admin',
         'default_page',
         'role_id',
+        'team_id',
     ];
 
     /**
@@ -60,6 +61,10 @@ class User extends Authenticatable implements JWTSubject
 
     public function role() {
       return $this->hasOne(\App\Role::class, 'id', 'role_id');
+    }
+
+    public function team() {
+      return $this->hasOne(\App\Team::class, 'id', 'team_id');
     }
 
     public function leave() {
