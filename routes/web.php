@@ -65,6 +65,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     'leave' => 'LeaveController',
     'expenses' => 'ExpenseController',
     'documents' => 'DocumentController',
+    'links' => 'LinkController',
   ]);
 
   Route::get('auth/logout', 'AuthController@logout')->name('auth.logout');
