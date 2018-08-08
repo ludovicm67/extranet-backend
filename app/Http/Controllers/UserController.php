@@ -31,7 +31,7 @@ class UserController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => User::with(['leave'])->get(),
+        'data' => User::with(['leave', 'team'])->get(),
       ]);
     }
 
@@ -126,7 +126,7 @@ class UserController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => $user->fresh(['documents']),
+        'data' => $user->fresh(['documents', 'team']),
       ]);
     }
 
@@ -205,6 +205,8 @@ class UserController extends Controller
           }
         }
         $user->team_id = $team->id;
+      } else {
+        $user->team_id = null;
       }
 
       $user->save();
