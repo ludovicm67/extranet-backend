@@ -189,8 +189,8 @@ class RightController extends Controller
           (object) [
             'name' => 'Heures supplémentaires',
             'show' => false,
-            'add' => true,
-            'edit' => false,
+            'add' => false,
+            'edit' => true,
             'delete' => false,
             'checked' => []
           ],
