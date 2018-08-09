@@ -13,6 +13,7 @@ class OvertimeController extends Controller
   }
 
   public function get(Request $request, User $user) {
+    $this->needPermission('overtime', 'edit');
     $this->cleanOvertimes();
 
     $year = intval($request->input('year', date('Y')));
@@ -42,6 +43,7 @@ class OvertimeController extends Controller
   }
 
   public function set(Request $request, User $user) {
+    $this->needPermission('overtime', 'edit');
     $this->cleanOvertimes();
 
     $year = intval($request->input('year', date('Y')));

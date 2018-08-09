@@ -10,4 +10,11 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function needPermission($permission, $right = 'show') {
+      $user = auth()->user();
+      if (!$user || !$user->can($permission, $right)) {
+        abort(403, 'Forbidden');
+      }
+    }
 }

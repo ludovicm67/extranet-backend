@@ -46,6 +46,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+      if ($exception && $exception->getMessage() == 'Forbidden') {
+        return response()->json([
+          'success' => false,
+          'code' => 403,
+          'message' => 'forbidden',
+        ], 403);
+      }
+      return parent::render($request, $exception);
     }
 }

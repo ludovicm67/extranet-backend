@@ -364,9 +364,14 @@ class PDFController extends Controller
     }
     $dt = new \DateTime("$year-$month");
 
-    $data = $this->getData($year, $month);
+    $user = auth()->user();
+    if (!$user || !$user->can('pdf', 'show')) {
+      $content = 'You are not allowed to view this file.';
+    } else {
 
-    $content = view('pdf.compta', $data);
+      $data = $this->getData($year, $month);
+      $content = view('pdf.compta', $data);
+    }
 
     $dompdf = new Dompdf();
     $dompdf->loadHtml($content);

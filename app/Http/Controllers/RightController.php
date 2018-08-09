@@ -191,7 +191,7 @@ class RightController extends Controller
             'show' => false,
             'add' => true,
             'edit' => false,
-            'delete' => true,
+            'delete' => false,
             'checked' => []
           ],
         'pdf' =>
