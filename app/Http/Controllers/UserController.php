@@ -31,7 +31,7 @@ class UserController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => User::with(['leave', 'team'])->get(),
+        'data' => array_values(User::with(['leave', 'team'])->get()->sortBy('team.id')->toArray()),
       ]);
     }
 
