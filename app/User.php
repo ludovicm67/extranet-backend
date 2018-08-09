@@ -10,6 +10,8 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    private $permissions = [];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -81,5 +83,39 @@ class User extends Authenticatable implements JWTSubject
 
     public function documents() {
       return $this->hasMany(\App\Document::class)->orderBy('date', 'desc');
+    }
+
+    private function checkPermission($permission, $right = 'show') {
+      if (!in_array($right, ['show', 'add', 'edit', 'delete'])) return false;
+      if (!isset($this->permissions[$permission])
+        || !isset($this->permissions[$permission][$right])
+      ) {
+        if ($this->is_admin) return true;
+        if (empty($this->role_id)) return false;
+
+        $roles = Right::where('role_id', $this->role_id)
+                    ->where('name', $permission)->get();
+
+        if (!isset($this->permissions[$permission])) {
+          $this->permissions[$permission] = [];
+        }
+
+        foreach ($roles as $role) {
+          if ($role[$right] == 1) {
+            $this->permissions[$permission][$right] = true;
+            return true;
+          }
+        }
+
+        $this->permissions[$permission][$right] = false;
+        return false;
+      } else {
+        return $this->permissions[$permission][$right];
+      }
+      return false;
+    }
+
+    public function can($permission, $right = 'show') {
+      return $this->checkPermission($permission, $right);
     }
 }
