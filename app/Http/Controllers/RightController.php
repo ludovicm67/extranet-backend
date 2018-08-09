@@ -215,6 +215,10 @@ class RightController extends Controller
       ];
     }
 
+    public function getPermissions() {
+      return $this->permissions;
+    }
+
     public function permissions() {
       $permissions = array_map(function ($e, $key) {
         $e->id = $key;

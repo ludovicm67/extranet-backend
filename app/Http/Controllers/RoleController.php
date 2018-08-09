@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\User;
+use App\Right;
 use App\Role;
 use Illuminate\Http\Request;
 
@@ -44,6 +45,39 @@ class RoleController extends Controller
       $role = new Role;
       $role->name = $request->name;
       $role->save();
+
+      $rc = new RightController();
+      $permissions = $rc->getPermissions(); // fetch list
+      $permissionsNames = array_keys($permissions);
+      Right::where('role_id', $role->id)->delete();
+      if (!empty($request->permissions)) {
+        foreach ($request->permissions as $name => $values) {
+          if (!in_array($name, $permissionsNames)) continue;
+          $permission = $permissions[$name];
+
+          $show = 0;
+          $add = 0;
+          $edit = 0;
+          $delete = 0;
+
+          if ($permission->show && in_array('show', $values)) $show = 1;
+          if ($permission->add && in_array('add', $values)) $add = 1;
+          if ($permission->edit && in_array('edit', $values)) $edit = 1;
+          if ($permission->delete && in_array('delete', $values)) $delete = 1;
+
+          if (!$show && !$add && !$edit && !$delete) continue;
+
+          Right::create([
+            'role_id' => $role->id,
+            'name' => $name,
+            'show' => $show,
+            'add' => $add,
+            'edit' => $edit,
+            'delete' => $delete,
+          ]);
+
+        }
+      }
 
       return response()->json([
         'success' => true,
@@ -86,6 +120,39 @@ class RoleController extends Controller
 
       $role->name = $request->name;
       $role->save();
+
+      $rc = new RightController();
+      $permissions = $rc->getPermissions(); // fetch list
+      $permissionsNames = array_keys($permissions);
+      Right::where('role_id', $role->id)->delete();
+      if (!empty($request->permissions)) {
+        foreach ($request->permissions as $name => $values) {
+          if (!in_array($name, $permissionsNames)) continue;
+          $permission = $permissions[$name];
+
+          $show = 0;
+          $add = 0;
+          $edit = 0;
+          $delete = 0;
+
+          if ($permission->show && in_array('show', $values)) $show = 1;
+          if ($permission->add && in_array('add', $values)) $add = 1;
+          if ($permission->edit && in_array('edit', $values)) $edit = 1;
+          if ($permission->delete && in_array('delete', $values)) $delete = 1;
+
+          if (!$show && !$add && !$edit && !$delete) continue;
+
+          Right::create([
+            'role_id' => $role->id,
+            'name' => $name,
+            'show' => $show,
+            'add' => $add,
+            'edit' => $edit,
+            'delete' => $delete,
+          ]);
+
+        }
+      }
 
       return response()->json([
         'success' => true,
