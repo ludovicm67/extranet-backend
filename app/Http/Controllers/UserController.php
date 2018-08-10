@@ -127,7 +127,6 @@ class UserController extends Controller
       return response()->json([
         'success' => true,
         'data' => $user->fresh(['documents', 'team']),
-        'test' => $user->can('pdf'),
       ]);
     }
 
