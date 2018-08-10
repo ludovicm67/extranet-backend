@@ -10,15 +10,15 @@ Route::get('auth/refresh', 'AuthController@refresh')->name('auth.refresh');
 Route::post('auth/login', 'AuthController@login')->name('auth.login');
 Route::post('password/reset', 'UserController@resetPassword')->name('password.reset');
 
-Route::get('/ics', 'LeaveController@ics')->name('ics');
+Route::get('ics', 'LeaveController@ics')->name('ics');
 
-Route::get('/links/preview', 'LinkController@preview')->name('links.preview');
+Route::get('links/preview', 'LinkController@preview')->name('links.preview');
 Route::group(['middleware' => ['jwt.auth']], function() {
 
-  Route::get('/permissions', 'RightController@permissions')->name('permissions');
-  Route::get('/permissions/{role}', 'RightController@rolePermissions')->name('roles.permissions');
+  Route::get('permissions', 'RightController@permissions')->name('permissions');
+  Route::get('permissions/{role}', 'RightController@rolePermissions')->name('roles.permissions');
 
-  Route::get('/search', 'SearchController@index')->name('search');
+  Route::get('search', 'SearchController@index')->name('search');
   Route::match(['PUT', 'PATCH'], 'users/me', 'UserController@updateMe')->name('users.update_me');
   Route::get('users/me', 'AuthController@me')->name('users.me');
 
@@ -69,7 +69,10 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     'documents' => 'DocumentController',
     'links' => 'LinkController',
     'teams' => 'TeamController',
+    'wikis' => 'WikiController',
   ]);
+
+  Route::get('project_wikis/{project}', 'WikiController@indexProject')->name('projects.wikis');
 
   Route::get('auth/logout', 'AuthController@logout')->name('auth.logout');
   Route::get('team', 'UserController@team')->name('users.team');
