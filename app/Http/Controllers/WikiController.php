@@ -26,7 +26,10 @@ class WikiController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => Wiki::where('project_id', $project->id)->get(),
+        'data' => Wiki::with(['user'])
+                  ->where('project_id', $project->id)
+                  ->orderBy('updated_at', 'desc')
+                  ->get(),
       ]);
     }
 
@@ -73,7 +76,7 @@ class WikiController extends Controller
     {
       return response()->json([
         'success' => true,
-        'data' => $wiki,
+        'data' => $wiki->fresh(['user']),
       ]);
     }
 
