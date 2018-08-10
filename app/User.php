@@ -82,7 +82,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function documents() {
-      return $this->hasMany(\App\Document::class)->orderBy('date', 'desc');
+      return $this->hasMany(\App\Document::class)->orderBy('date', 'desc')->orderBy('id', 'desc');
     }
 
     private function checkPermission($permission, $right = 'show') {
