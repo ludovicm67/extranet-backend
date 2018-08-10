@@ -71,7 +71,13 @@ class LinkController extends Controller
     }
 
     public function preview(Request $request) {
-      $explorer = new Explorer($request->url);
+      $url = $request->url;
+      $parsed = parse_url($url);
+      if (empty($parsed['scheme'])) {
+          $url = 'http://' . ltrim($url, '/');
+      }
+
+      $explorer = new Explorer($url);
       return response()->json([
         'success' => true,
         'data' => $explorer->getResults(),

@@ -12,8 +12,9 @@ Route::post('password/reset', 'UserController@resetPassword')->name('password.re
 
 Route::get('ics', 'LeaveController@ics')->name('ics');
 
-Route::get('links/preview', 'LinkController@preview')->name('links.preview');
 Route::group(['middleware' => ['jwt.auth']], function() {
+  Route::get('links/preview', 'LinkController@preview')->name('links.preview');
+  Route::post('links/preview', 'LinkController@preview')->name('links.preview.post');
 
   Route::get('permissions', 'RightController@permissions')->name('permissions');
   Route::get('permissions/{role}', 'RightController@rolePermissions')->name('roles.permissions');
