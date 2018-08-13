@@ -4,9 +4,13 @@ namespace App;
 
 use ludovicm67\Laravel\Multidomain\Configuration;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Document extends Model
 {
+  use LogsActivity;
+  protected static $logFillable = true;
+
   protected $table = 'documents';
   protected $fillable = [
     'user_id',

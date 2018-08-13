@@ -18,6 +18,7 @@
         "ludovicm67/superdate": "^1.0",
         "ludovicm67/url-explorer": "^1.0",
         "ramsey/uuid": "^3.7",
+        "spatie/laravel-activitylog": "^2.8",
         "teknoo/sellsy-client": "^2.0",
         "tymon/jwt-auth": "^1.0"
     },

@@ -4,9 +4,13 @@ namespace App;
 
 use App\ProjetFavorite;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Project extends Model
 {
+  use LogsActivity;
+  protected static $logFillable = true;
+
   protected $table = 'projects';
   protected $appends = ['favorited'];
   protected $fillable = [

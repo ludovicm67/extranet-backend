@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Wiki extends Model
 {
+  use LogsActivity;
+  protected static $logFillable = true;
+
   protected $table = 'wikis';
   protected $fillable = [
     'title', 'content', 'user_id', 'project_id',

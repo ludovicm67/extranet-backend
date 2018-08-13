@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Contract extends Model
 {
+  use LogsActivity;
+  protected static $logFillable = true;
+
   protected $table = 'contracts';
   protected $fillable = [
     'user_id', 'type', 'start_at', 'end_at'

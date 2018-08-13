@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Contact extends Model
 {
+  use LogsActivity;
+  protected static $logFillable = true;
+
   protected $table = 'contacts';
   protected $fillable = [
     'name', 'type_id', 'mail', 'phone', 'address', 'other'
