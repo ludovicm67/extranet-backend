@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\LinkCategory;
 use Illuminate\Http\Request;
 
