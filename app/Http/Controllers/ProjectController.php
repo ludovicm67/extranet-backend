@@ -50,7 +50,7 @@ class ProjectController extends Controller
     }
 
     // create a tag when needed; returns the tag id
-    private function createTagsOnThFly($id) {
+    private function createTagsOnTheFly($id) {
       $tag = Tag::find($id);
       if (empty($tag)) {
         $tag = Tag::where('name', $id)->first();
@@ -94,7 +94,7 @@ class ProjectController extends Controller
       if (!empty($request->tags) && is_array($request->tags)) {
         foreach ($request->tags as $tag) {
           if (empty($tag['id'])) continue;
-          $tagId = $this->createTagsOnThFly($tag['id']);
+          $tagId = $this->createTagsOnTheFly($tag['id']);
           if (empty($tagId)) continue;
           ProjectTag::create([
             'project_id' => $project->id,

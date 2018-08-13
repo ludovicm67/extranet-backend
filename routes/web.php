@@ -69,6 +69,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     'expenses' => 'ExpenseController',
     'documents' => 'DocumentController',
     'links' => 'LinkController',
+    'link_categories' => 'LinkCategoryController',
     'teams' => 'TeamController',
     'wikis' => 'WikiController',
   ]);

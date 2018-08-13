@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use ludovicm67\Url\Explorer\Explorer;
 use ludovicm67\Request\Exception\RequestException;
 use App\Link;
+use App\LinkCategory;
+use App\LinkCategoryAssoc;
 use Illuminate\Http\Request;
 
 class LinkController extends Controller
@@ -22,6 +25,19 @@ class LinkController extends Controller
       ]);
     }
 
+    private function createCategoriesOnTheFly($id) {
+      $category = LinkCategory::find($id);
+      if (empty($category)) {
+        $category = LinkCategory::where('name', $id)->first();
+        if (empty($category)) {
+          $category = LinkCategory::create([
+            'name' => $id,
+          ]);
+        }
+      }
+      return $category->id;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -30,7 +46,40 @@ class LinkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $validator = Validator::make($request->all(), [
+        'url' => 'required|url',
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json([
+          'success' => false,
+          'errors' => $validator->errors()->all(),
+        ], 400);
+      }
+
+      $link = Link::create([
+        'user_id' => auth()->user()->id,
+        'title' => $request->title,
+        'descriion' => $request->description,
+        'image_url' => $request->image_url,
+        'url' => $request->url,
+      ]);
+
+      if (!empty($request->categories) && is_array($request->categories)) {
+        foreach ($request->categories as $category) {
+          if (empty($category)) continue;
+          $categoryId = $this->createCategoriesOnTheFly($category);
+          if (empty($categoryId)) continue;
+          LinkCategoryAssoc::create([
+            'link_id' => $link->id,
+            'category_id' => $categoryId,
+          ]);
+        }
+      }
+
+      return response()->json([
+        'success' => true,
+      ]);
     }
 
     /**
@@ -41,7 +90,10 @@ class LinkController extends Controller
      */
     public function show(Link $link)
     {
-        //
+      return response()->json([
+        'success' => true,
+        'data' => $link,
+      ]);
     }
 
     /**
@@ -53,7 +105,41 @@ class LinkController extends Controller
      */
     public function update(Request $request, Link $link)
     {
-        //
+      $validator = Validator::make($request->all(), [
+        'url' => 'required|url',
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json([
+          'success' => false,
+          'errors' => $validator->errors()->all(),
+        ], 400);
+      }
+
+      $link->update([
+        'user_id' => auth()->user()->id,
+        'title' => $request->title,
+        'descriion' => $request->description,
+        'image_url' => $request->image_url,
+        'url' => $request->url,
+      ]);
+
+      LinkCategoryAssoc::where('link_id', $link->id)->delete();
+      if (!empty($request->categories) && is_array($request->categories)) {
+        foreach ($request->categories as $category) {
+          if (empty($category)) continue;
+          $categoryId = $this->createCategoriesOnTheFly($category);
+          if (empty($categoryId)) continue;
+          LinkCategoryAssoc::create([
+            'link_id' => $link->id,
+            'category_id' => $categoryId,
+          ]);
+        }
+      }
+
+      return response()->json([
+        'success' => true,
+      ]);
     }
 
     /**
