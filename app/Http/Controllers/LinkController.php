@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use ludovicm67\Url\Explorer\Explorer;
+use ludovicm67\Request\Exception\RequestException;
 use App\Link;
 use Illuminate\Http\Request;
 
@@ -74,10 +75,18 @@ class LinkController extends Controller
       $url = $request->url;
       $parsed = parse_url($url);
       if (empty($parsed['scheme'])) {
-          $url = 'http://' . ltrim($url, '/');
+        $url = 'http://' . ltrim($url, '/');
       }
 
-      $explorer = new Explorer($url);
+      try {
+        $explorer = new Explorer($url);
+      } catch (RequestException $e) {
+        return response()->json([
+          'success' => false,
+          'message' => 'request error: please check if the provided URL is valid',
+        ], 400);
+      }
+
       return response()->json([
         'success' => true,
         'data' => $explorer->getResults(),
