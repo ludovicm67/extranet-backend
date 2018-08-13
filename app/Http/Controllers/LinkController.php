@@ -60,7 +60,7 @@ class LinkController extends Controller
       $link = Link::create([
         'user_id' => auth()->user()->id,
         'title' => $request->title,
-        'descriion' => $request->description,
+        'description' => $request->description,
         'image_url' => $request->image_url,
         'url' => $request->url,
       ]);
@@ -119,7 +119,7 @@ class LinkController extends Controller
       $link->update([
         'user_id' => auth()->user()->id,
         'title' => $request->title,
-        'descriion' => $request->description,
+        'description' => $request->description,
         'image_url' => $request->image_url,
         'url' => $request->url,
       ]);
