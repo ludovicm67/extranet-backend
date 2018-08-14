@@ -14,4 +14,8 @@ class Link extends Model
   protected $fillable = [
     'user_id', 'title', 'description', 'image_url', 'url',
   ];
+
+  public function categories() {
+    return $this->belongsToMany('App\LinkCategory', 'link_categories_assoc', 'link_id', 'category_id');
+  }
 }
