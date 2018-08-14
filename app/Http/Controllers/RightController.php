@@ -40,24 +40,6 @@ class RightController extends Controller
             'delete' => false,
             'checked' => []
           ],
-        'orders' =>
-          (object) [
-            'name' => 'Commandes',
-            'show' => true,
-            'add' => false,
-            'edit' => false,
-            'delete' => false,
-            'checked' => []
-          ],
-        'invoices' =>
-          (object) [
-            'name' => 'Factures',
-            'show' => true,
-            'add' => false,
-            'edit' => false,
-            'delete' => false,
-            'checked' => []
-          ],
         'projects' =>
           (object) [
             'name' => 'Projets',
@@ -87,16 +69,7 @@ class RightController extends Controller
           ],
         'identifiers' =>
           (object) [
-            'name' => "Types d'identifiants",
-            'show' => true,
-            'add' => true,
-            'edit' => true,
-            'delete' => true,
-            'checked' => []
-          ],
-        'project_identifiers' =>
-          (object) [
-            'name' => 'Identifiants de projets',
+            'name' => 'Identifiants de projet',
             'show' => true,
             'add' => true,
             'edit' => true,
@@ -137,16 +110,6 @@ class RightController extends Controller
             'add' => false, // use 'projects' value
             'edit' => false, // use 'projects' value
             'delete' => false, // use 'projects' value
-            'checked' => []
-          ],
-        // contact types
-        'types' =>
-          (object) [
-            'name' => 'Types de contact',
-            'show' => true,
-            'add' => true,
-            'edit' => true,
-            'delete' => true,
             'checked' => []
           ],
         'leave' =>
