@@ -233,6 +233,8 @@ class LeaveController extends Controller
     }
 
     public function accept(Leave $leave) {
+      $this->needPermission('request_management', 'edit');
+
       $leave->update([
         'accepted' => 1,
       ]);
@@ -243,6 +245,8 @@ class LeaveController extends Controller
     }
 
     public function reject(Leave $leave) {
+      $this->needPermission('request_management', 'edit');
+
       $leave->update([
         'accepted' => -1,
       ]);

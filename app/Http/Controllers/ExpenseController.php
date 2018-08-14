@@ -158,6 +158,8 @@ class ExpenseController extends Controller
     }
 
     public function accept(Expense $expense) {
+      $this->needPermission('request_management', 'edit');
+
       $expense->update([
         'accepted' => 1,
       ]);
@@ -168,6 +170,8 @@ class ExpenseController extends Controller
     }
 
     public function reject(Expense $expense) {
+      $this->needPermission('request_management', 'edit');
+
       $expense->update([
         'accepted' => -1,
       ]);
