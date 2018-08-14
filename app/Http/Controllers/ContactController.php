@@ -16,6 +16,7 @@ class ContactController extends Controller
      */
     public function index()
     {
+      $this->needPermission('contacts', 'show');
       return response()->json([
         'success' => true,
         'data' => Contact::all(),
@@ -30,6 +31,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('contacts', 'add');
       $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
         'mail' => 'nullable|email|max:255',
@@ -89,6 +91,7 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
+      $this->needPermission('contacts', 'show');
       return response()->json([
         'success' => true,
         'data' => $contact->fresh(['type']),
@@ -104,6 +107,7 @@ class ContactController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
+      $this->needPermission('contacts', 'edit');
       $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
         'mail' => 'nullable|email|max:255',
@@ -163,6 +167,7 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
+      $this->needPermission('contacts', 'delete');
       $contact->delete();
 
       return response()->json([
@@ -170,7 +175,7 @@ class ContactController extends Controller
       ]);
     }
 
-    public function exportData(Request $request) {
+    private function exportData(Request $request) {
       $type = intval($request->type); // type id
       $tag = intval($request->tag); // tag id
       $value = trim($request->value); // tag value
@@ -226,6 +231,7 @@ class ContactController extends Controller
     }
 
     public function export(Request $request) {
+      $this->needPermission('export_contacts', 'show');
       $data = $this->exportData($request);
 
       return response()->json([
@@ -235,6 +241,7 @@ class ContactController extends Controller
     }
 
     public function csv(Request $request) {
+      $this->needPermission('export_contacts', 'show');
       $data = $this->exportData($request);
 
       ob_start();

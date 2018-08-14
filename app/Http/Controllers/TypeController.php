@@ -16,6 +16,7 @@ class TypeController extends Controller
      */
     public function index()
     {
+      $this->needPermission('contacts', 'show');
       return response()->json([
         'success' => true,
         'data' => Type::all(),
@@ -30,6 +31,7 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('contacts', 'add');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:types',
       ]);
@@ -58,6 +60,7 @@ class TypeController extends Controller
      */
     public function show(Type $type)
     {
+      $this->needPermission('contacts', 'show');
       return response()->json([
         'success' => true,
         'data' => $type
@@ -73,6 +76,7 @@ class TypeController extends Controller
      */
     public function update(Request $request, Type $type)
     {
+      $this->needPermission('contacts', 'edit');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:types,name,' . $type->id,
       ]);
@@ -100,6 +104,7 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
+      $this->needPermission('contacts', 'delete');
       Contact::where('type_id', $type->id)->update([
         'type_id' => null,
       ]);
