@@ -211,7 +211,16 @@ class RightController extends Controller
             'edit' => false,
             'delete' => true,
             'checked' => []
-          ]
+          ],
+        'links' =>
+          (object) [
+            'name' => 'Partage de liens',
+            'show' => true,
+            'add' => true,
+            'edit' => true,
+            'delete' => true,
+            'checked' => []
+          ],
       ];
     }
 

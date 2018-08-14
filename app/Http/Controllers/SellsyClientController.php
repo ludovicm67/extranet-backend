@@ -14,6 +14,7 @@ class SellsyClientController extends Controller
      */
     public function index()
     {
+      $this->needPermission('clients', 'show');
       return response()->json([
         'success' => true,
         'data' => SellsyClient::all(),
@@ -39,6 +40,7 @@ class SellsyClientController extends Controller
      */
     public function show(SellsyClient $sellsySellsyClient)
     {
+      $this->needPermission('clients_details', 'show');
       return response()->json([
         'success' => true,
         'data' => $sellsySellsyClient->fresh([

@@ -66,7 +66,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     public function role() {
-      return $this->hasOne(\App\Role::class, 'id', 'role_id');
+      return $this->hasOne(\App\Role::class, 'id', 'role_id')->with('permissions');
     }
 
     public function team() {
