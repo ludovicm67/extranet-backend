@@ -13,6 +13,8 @@ Route::post('password/reset', 'UserController@resetPassword')->name('password.re
 Route::get('ics', 'LeaveController@ics')->name('ics');
 
 Route::group(['middleware' => ['jwt.auth']], function() {
+  Route::get('links_cat/all', 'LinkCategoryController@showAll')->name('links_cat.all');
+  Route::get('links_cat/{link_category}', 'LinkCategoryController@showAllFromCategory')->name('links_cat.show');
   Route::get('links/preview', 'LinkController@preview')->name('links.preview');
   Route::post('links/preview', 'LinkController@preview')->name('links.preview.post');
 

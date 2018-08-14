@@ -12,4 +12,8 @@ class LinkCategory extends Model
 
   protected $table = 'link_categories';
   protected $fillable = ['name'];
+
+  public function links() {
+    return $this->belongsToMany('App\Link', 'link_categories_assoc', 'category_id');
+  }
 }

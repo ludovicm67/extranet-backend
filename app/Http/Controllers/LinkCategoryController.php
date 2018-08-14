@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\Link;
 use App\LinkCategory;
 use Illuminate\Http\Request;
 
@@ -103,6 +104,23 @@ class LinkCategoryController extends Controller
 
       return response()->json([
         'success' => true,
+      ]);
+    }
+
+    public function showAll() {
+      return response()->json([
+        'success' => true,
+        'data' => [
+          'name' => 'all',
+          'links' => Link::orderBy('id', 'desc')->get(),
+        ]
+      ]);
+    }
+
+    public function showAllFromCategory(LinkCategory $linkCategory) {
+      return response()->json([
+        'success' => true,
+        'data' =>$linkCategory->fresh(['links']),
       ]);
     }
 }
