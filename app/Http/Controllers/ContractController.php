@@ -15,6 +15,7 @@ class ContractController extends Controller
      */
     public function index()
     {
+      $this->needPermission('contracts', 'show');
       return response()->json([
         'success' => true,
         'data' => Contract::with('user')->get(),
@@ -29,6 +30,7 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('contracts', 'add');
       $validator = Validator::make($request->all(), [
         'user_id' => 'exists:users,id',
         'type' => 'required|string',
@@ -69,6 +71,7 @@ class ContractController extends Controller
      */
     public function show(Contract $contract)
     {
+      $this->needPermission('contracts', 'show');
       return response()->json([
         'success' => true,
         'data' => $contract->fresh(['user']),
@@ -84,6 +87,7 @@ class ContractController extends Controller
      */
     public function update(Request $request, Contract $contract)
     {
+      $this->needPermission('contracts', 'edit');
       $validator = Validator::make($request->all(), [
         'user_id' => 'exists:users,id',
         'type' => 'required|string',
@@ -124,6 +128,7 @@ class ContractController extends Controller
      */
     public function destroy(Contract $contract)
     {
+      $this->needPermission('contracts', 'delete');
       $contract->delete();
       return response()->json([
         'success' => true,
