@@ -17,6 +17,7 @@ class RoleController extends Controller
      */
     public function index()
     {
+      $this->needPermission('roles', 'show');
       return response()->json([
         'success' => true,
         'data' => Role::all(),
@@ -31,6 +32,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('roles', 'add');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:roles',
       ]);
@@ -92,6 +94,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
+      $this->needPermission('roles', 'show');
       return response()->json([
         'success' => true,
         'data' => $role
@@ -107,6 +110,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+      $this->needPermission('roles', 'edit');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:roles,name,' . $role->id,
       ]);
@@ -167,6 +171,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+      $this->needPermission('roles', 'delete');
       User::where('role_id', $role->id)->update([
         'role_id' => null,
       ]);

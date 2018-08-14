@@ -16,6 +16,7 @@ class TeamController extends Controller
      */
     public function index()
     {
+      $this->needPermission('users', 'show');
       return response()->json([
         'success' => true,
         'data' => Team::all(),
@@ -30,6 +31,7 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('users', 'add');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:teams',
       ]);
@@ -58,6 +60,7 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
+      $this->needPermission('users', 'show');
       return response()->json([
         'success' => true,
         'data' => $team
@@ -73,6 +76,7 @@ class TeamController extends Controller
      */
     public function update(Request $request, Team $team)
     {
+      $this->needPermission('users', 'edit');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:teams,name,' . $team->id,
       ]);
@@ -100,6 +104,7 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
+      $this->needPermission('users', 'delete');
       User::where('team_id', $team->id)->update([
         'team_id' => null,
       ]);

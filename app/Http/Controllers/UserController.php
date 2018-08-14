@@ -21,6 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
+      $this->needPermission('users', 'show');
       return response()->json([
         'success' => true,
         'data' => User::all(),
@@ -43,6 +44,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('users', 'add');
       $validator = Validator::make($request->all(), [
         'firstname' => 'required|string|max:255',
         'lastname' => 'required|string|max:255',
@@ -124,6 +126,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+      $this->needPermission('users', 'show');
       return response()->json([
         'success' => true,
         'data' => $user->fresh(['documents', 'team']),
@@ -139,6 +142,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+      $this->needPermission('users', 'edit');
       $me = auth()->user();
       $isMe = $user->id === $me->id;
 
@@ -261,6 +265,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+      $this->needPermission('users', 'delete');
       if (auth()->user()->id != $user->id) {
         $user->delete();
 
