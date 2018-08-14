@@ -15,6 +15,7 @@ class TagController extends Controller
      */
     public function index()
     {
+      $this->needPermission('projects', 'show');
       return response()->json([
         'success' => true,
         'data' => Tag::all(),
@@ -29,6 +30,7 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('projects', 'add');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:tags',
       ]);
@@ -57,6 +59,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
+      $this->needPermission('projects', 'show');
       return response()->json([
         'success' => true,
         'data' => $tag->fresh(['projects']),
@@ -72,6 +75,7 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
+      $this->needPermission('projects', 'edit');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:tags,name,' . $tag->id,
       ]);
@@ -99,6 +103,7 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
+      $this->needPermission('projects', 'delete');
       $tag->delete();
 
       return response()->json([

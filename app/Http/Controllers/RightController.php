@@ -85,15 +85,6 @@ class RightController extends Controller
             'delete' => true,
             'checked' => []
           ],
-        'tags' =>
-          (object) [
-            'name' => 'Tags',
-            'show' => true,
-            'add' => true,
-            'edit' => true,
-            'delete' => true,
-            'checked' => []
-          ],
         'users' =>
           (object) [
             'name' => 'Utilisateurs',

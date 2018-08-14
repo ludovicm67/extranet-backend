@@ -126,6 +126,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('projects', 'add');
       $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
         'parent_id' => 'nullable|exists:projects,id',
@@ -240,6 +241,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+      $this->needPermission('projects', 'delete');
       $project->delete();
       return response()->json([
         'success' => true,
@@ -357,6 +359,7 @@ class ProjectController extends Controller
     }
 
     public function archive(Project $project) {
+      $this->needPermission('projects', 'edit');
       $project->update([
         'archived' => 1,
       ]);
@@ -367,6 +370,7 @@ class ProjectController extends Controller
     }
 
     public function unarchive(Project $project) {
+      $this->needPermission('projects', 'edit');
       $project->update([
         'archived' => 0,
       ]);
