@@ -19,6 +19,7 @@ class LinkController extends Controller
      */
     public function index()
     {
+      $this->needPermission('links', 'show');
       return response()->json([
         'success' => true,
         'data' => [
@@ -49,6 +50,7 @@ class LinkController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('links', 'add');
       $validator = Validator::make($request->all(), [
         'url' => 'required|url',
       ]);
@@ -93,6 +95,7 @@ class LinkController extends Controller
      */
     public function show(Link $link)
     {
+      $this->needPermission('links', 'show');
       return response()->json([
         'success' => true,
         'data' => $link->fresh(['categories']),
@@ -108,6 +111,7 @@ class LinkController extends Controller
      */
     public function update(Request $request, Link $link)
     {
+      $this->needPermission('links', 'edit');
       $validator = Validator::make($request->all(), [
         'url' => 'required|url',
       ]);
@@ -153,6 +157,7 @@ class LinkController extends Controller
      */
     public function destroy(Link $link)
     {
+      $this->needPermission('links', 'delete');
       $link->delete();
 
       return response()->json([

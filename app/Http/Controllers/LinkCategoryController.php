@@ -16,6 +16,7 @@ class LinkCategoryController extends Controller
      */
     public function index()
     {
+      $this->needPermission('links', 'show');
       return response()->json([
         'success' => true,
         'data' => LinkCategory::all(),
@@ -30,6 +31,7 @@ class LinkCategoryController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('links', 'add');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:types',
       ]);
@@ -58,6 +60,7 @@ class LinkCategoryController extends Controller
      */
     public function show(LinkCategory $linkCategory)
     {
+      $this->needPermission('links', 'show');
       return response()->json([
         'success' => true,
         'data' => $linkCategory
@@ -73,6 +76,7 @@ class LinkCategoryController extends Controller
      */
     public function update(Request $request, LinkCategory $linkCategory)
     {
+      $this->needPermission('links', 'edit');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:link_categories,name,' . $linkCategory->id,
       ]);
@@ -100,6 +104,7 @@ class LinkCategoryController extends Controller
      */
     public function destroy(LinkCategory $linkCategory)
     {
+      $this->needPermission('links', 'delete');
       $linkCategory->delete();
 
       return response()->json([
@@ -108,6 +113,7 @@ class LinkCategoryController extends Controller
     }
 
     public function showAll() {
+      $this->needPermission('links', 'show');
       return response()->json([
         'success' => true,
         'data' => [
@@ -118,6 +124,7 @@ class LinkCategoryController extends Controller
     }
 
     public function showAllFromCategory(LinkCategory $linkCategory) {
+      $this->needPermission('links', 'show');
       return response()->json([
         'success' => true,
         'data' =>$linkCategory->fresh(['links']),
