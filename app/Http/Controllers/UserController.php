@@ -127,9 +127,18 @@ class UserController extends Controller
     public function show(User $user)
     {
       $this->needPermission('users', 'show');
+
+      $authUser = auth()->user();
+      if ((!$authUser || !$authUser->can('documents', 'show')) && $user->id != $authUser->id) {
+        $data = $user->fresh(['team']);
+        $data->documents = [];
+      } else {
+        $data = $user->fresh(['documents', 'team']);
+      }
+
       return response()->json([
         'success' => true,
-        'data' => $user->fresh(['documents', 'team']),
+        'data' => $data,
       ]);
     }
 

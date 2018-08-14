@@ -24,6 +24,7 @@ class DocumentController extends Controller
      */
     public function index()
     {
+      $this->needPermission('documents', 'show');
       return response()->json([
         'success' => true,
         'data' => Document::all(),
@@ -38,6 +39,7 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('documents', 'add');
       $validator = Validator::make($request->all(), [
         'user_id' => 'exists:users,id',
         'type' => 'nullable|string',
@@ -83,6 +85,7 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
+      $this->needPermission('documents', 'show');
       return response()->json([
         'success' => true,
         'data' => $document->fresh(['user']),
@@ -98,6 +101,7 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
+      $this->needPermission('documents', 'edit');
       $validator = Validator::make($request->all(), [
         'user_id' => 'exists:users,id',
         'type' => 'nullable|string',
@@ -146,6 +150,7 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
+      $this->needPermission('documents', 'delete');
       $this->deleteFile($document->file);
       $document->delete();
 
