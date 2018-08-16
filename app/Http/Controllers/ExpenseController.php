@@ -38,6 +38,7 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('expenses', 'add');
       $validator = Validator::make($request->all(), [
         'type' => 'required|string',
         'month' => 'required|integer|min:1|max:12',
@@ -149,6 +150,7 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
+      $this->needPermission('expenses', 'delete');
       $this->deleteFile($expense->file);
       $expense->delete();
 

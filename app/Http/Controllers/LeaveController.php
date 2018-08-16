@@ -55,6 +55,7 @@ class LeaveController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('leave', 'add');
       $validator = Validator::make($request->all(), [
         'reason' => 'required|string',
         'file' => 'nullable|file',
@@ -224,6 +225,7 @@ class LeaveController extends Controller
      */
     public function destroy(Leave $leave)
     {
+      $this->needPermission('leave', 'delete');
       $this->deleteFile($leave->file);
       $leave->delete();
 
