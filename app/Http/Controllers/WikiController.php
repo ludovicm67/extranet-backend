@@ -16,6 +16,8 @@ class WikiController extends Controller
      */
     public function index()
     {
+      $this->needPermission('projects', 'show');
+
       return response()->json([
         'success' => true,
         'data' => Wiki::all(),
@@ -24,6 +26,11 @@ class WikiController extends Controller
 
     public function indexProject(Project $project)
     {
+      $user = auth()->user();
+      if (!in_array($project->id, $user->user_projects)) {
+        $this->needPermission('projects', 'show');
+      }
+
       return response()->json([
         'success' => true,
         'data' => Wiki::with(['user'])
@@ -54,6 +61,11 @@ class WikiController extends Controller
         ], 400);
       }
 
+      $user = auth()->user();
+      if (!in_array($request->project_id, $user->user_projects)) {
+        $this->needPermission('projects', 'edit');
+      }
+
       Wiki::create([
         'title' => $request->title,
         'content' => $request->content,
@@ -74,6 +86,11 @@ class WikiController extends Controller
      */
     public function show(Wiki $wiki)
     {
+      $user = auth()->user();
+      if (!in_array($wiki->project_id, $user->user_projects)) {
+        $this->needPermission('projects', 'show');
+      }
+
       return response()->json([
         'success' => true,
         'data' => $wiki->fresh(['user']),
@@ -91,7 +108,6 @@ class WikiController extends Controller
     {
       $validator = Validator::make($request->all(), [
         'title' => 'string|max:255',
-        'project_id' => 'exists:projects,id',
       ]);
 
       if ($validator->fails()) {
@@ -99,6 +115,11 @@ class WikiController extends Controller
           'success' => false,
           'errors' => $validator->errors()->all(),
         ], 400);
+      }
+
+      $user = auth()->user();
+      if (!in_array($wiki->project_id, $user->user_projects)) {
+        $this->needPermission('projects', 'edit');
       }
 
       $wiki->update([
@@ -120,6 +141,11 @@ class WikiController extends Controller
      */
     public function destroy(Wiki $wiki)
     {
+      $user = auth()->user();
+      if (!in_array($wiki->project_id, $user->user_projects)) {
+        $this->needPermission('projects', 'edit');
+      }
+
       $wiki->delete();
 
       return response()->json([

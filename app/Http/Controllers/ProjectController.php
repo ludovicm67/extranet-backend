@@ -216,7 +216,7 @@ class ProjectController extends Controller
     {
       $user = auth()->user();
       if (!in_array($project->id, $user->user_projects)) {
-        $this->needPermission('projects', 'show');
+        $this->needPermission('projects', 'edit');
       }
 
       $validator = Validator::make($request->all(), [
