@@ -25,6 +25,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
   Route::match(['PUT', 'PATCH'], 'users/me', 'UserController@updateMe')->name('users.update_me');
   Route::get('users/me', 'AuthController@me')->name('users.me');
 
+  Route::get('pdf/edit', 'PDFController@edit')->name('pdf.edit');
+  Route::post('pdf/edit', 'PDFController@comptaEdit')->name('pdf.comptaEdit');
   Route::get('pdf/compta', 'PDFController@compta')->name('pdf.compta');
 
   Route::get('requests', 'RequestController@index')->name('requests.index');

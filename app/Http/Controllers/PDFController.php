@@ -282,7 +282,8 @@ class PDFController extends Controller
 
       // hello, dear intern! :-)
       if (mb_strtolower($line->type) == 'stage') {
-        $nbDays = $this->getNbDays($year, $month, $line->start_at, $line->end_at, false);
+        $nbDays = $this->getNbDays($year, $month, $line->start_at, $line->end_at, false) - $conges - $maladie - $autre;
+        if ($nbDays < 0) $nbDays = 0;
         if (!empty($details)) $details .= ', ';
         $details .= $nbDays . ' jours de présence (stage)';
       }
@@ -350,6 +351,27 @@ class PDFController extends Controller
     ];
   }
 
+  public function edit(Request $request) {
+    $this->needPermission('pdf', 'edit');
+
+    // get month and year params
+    $year = intval($request->input('year', date('Y')));
+    $month = intval($request->input('month', date('n')));
+    if ($month < 1) {
+      $month = 1;
+    } else if ($month > 12) {
+      $month = 12;
+    }
+    if ($year < 1900 || $year > 2100) {
+      $year = intval(date('Y'));
+    }
+
+    return response()->json([
+      'success' => true,
+      'data' => $this->getData($year, $month),
+    ]);
+  }
+
   public function compta(Request $request) {
     // get month and year params
     $year = intval($request->input('year', date('Y')));
@@ -368,9 +390,45 @@ class PDFController extends Controller
     if (!$user || !$user->can('pdf', 'show')) {
       $content = 'You are not allowed to view this file.';
     } else {
-
       $data = $this->getData($year, $month);
       $content = view('pdf.compta', $data);
+    }
+
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml($content);
+    $dompdf->setPaper('A4', 'landscape');
+    $dompdf->render();
+    $dompdf->stream($dt->format($this->pdfName) . '.pdf', [
+      'compress' => 1,
+      'Attachment' => 0
+    ]);
+  }
+
+  public function comptaEdit(Request $request) {
+    // get month and year params
+    $year = intval($request->input('year', date('Y')));
+    $month = intval($request->input('month', date('n')));
+    if ($month < 1) {
+      $month = 1;
+    } else if ($month > 12) {
+      $month = 12;
+    }
+    if ($year < 1900 || $year > 2100) {
+      $year = intval(date('Y'));
+    }
+    $dt = new \DateTime("$year-$month");
+
+    $user = auth()->user();
+    if (!$user || !$user->can('pdf', 'show')) {
+      $content = 'You are not allowed to view this file.';
+    } else {
+      $l = json_decode(json_encode($request->lines));
+      if (empty($l)) $l = [];
+      $content = view('pdf.compta', [
+        'name' => $request->name,
+        'period' => $request->period,
+        'lines' => $l,
+      ]);
     }
 
     $dompdf = new Dompdf();
