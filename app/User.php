@@ -14,6 +14,8 @@ class User extends Authenticatable implements JWTSubject
     protected static $logFillable = true;
 
 
+    protected $appends = ['user_projects'];
+
     private $permissions = [];
 
     /**
@@ -89,6 +91,10 @@ class User extends Authenticatable implements JWTSubject
       return $this->hasMany(\App\Document::class)->orderBy('date', 'desc')->orderBy('id', 'desc');
     }
 
+    public function projects() {
+      return $this->belongsToMany('App\Project', 'project_users');
+    }
+
     private function checkPermission($permission, $right = 'show') {
       if (!in_array($right, ['show', 'add', 'edit', 'delete'])) return false;
       if (!isset($this->permissions[$permission])
@@ -121,5 +127,12 @@ class User extends Authenticatable implements JWTSubject
 
     public function can($permission, $right = 'show') {
       return $this->checkPermission($permission, $right);
+    }
+
+    public function getUserProjectsAttribute() {
+      $p = json_decode(json_encode($this->projects));
+      return array_map(function ($e) {
+        return $e->id;
+      }, $p);
     }
 }

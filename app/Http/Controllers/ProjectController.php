@@ -24,12 +24,18 @@ class ProjectController extends Controller
      */
     public function index()
     {
+      $projects = Project::orderBy('end_at', 'desc')
+                  ->where('archived', 0)->get()
+                  ->sortByDesc('favorited')->values();
+
+      $user = auth()->user();
+      if (!$user->can('projects', 'show')) {
+        $projects = $projects->whereIn('id', $user->user_projects);
+      }
+
       return response()->json([
         'success' => true,
-        'data' => Project::orderBy('end_at', 'desc')
-                  ->where('archived', 0)->get()
-                  ->sortByDesc('favorited')->values()
-                  ->all(),
+        'data' => $projects->all(),
       ]);
     }
 
@@ -40,12 +46,18 @@ class ProjectController extends Controller
      */
     public function archived()
     {
+      $projects = Project::orderBy('end_at', 'desc')
+                  ->where('archived', 1)->get()
+                  ->sortByDesc('favorited')->values();
+
+      $user = auth()->user();
+      if (!$user->can('projects', 'show')) {
+        $projects = $projects->whereIn('id', $user->user_projects);
+      }
+
       return response()->json([
         'success' => true,
-        'data' => Project::orderBy('end_at', 'desc')
-                  ->where('archived', 1)->get()
-                  ->sortByDesc('favorited')->values()
-                  ->all(),
+        'data' => $projects->all(),
       ]);
     }
 
@@ -172,11 +184,24 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+      $fresh = [
+        'users', 'orders', 'contacts', 'tags', 'urls', 'client', 'parent',
+      ];
+
+      $user = auth()->user();
+      if (!in_array($project->id, $user->user_projects)) {
+        $this->needPermission('projects', 'show');
+        if (!$user->can('project_urls', 'show')) {
+          $fresh = array_diff($fresh, ['urls']);
+        }
+      }
+
+      $project = json_decode(json_encode($project->fresh($fresh)));
+      if (!isset($project->urls)) $project->urls = [];
+
       return response()->json([
         'success' => true,
-        'data' => $project->fresh([
-          'users', 'orders', 'contacts', 'tags', 'urls', 'client', 'parent',
-        ]),
+        'data' => $project,
       ]);
     }
 
@@ -189,6 +214,11 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+      $user = auth()->user();
+      if (!in_array($project->id, $user->user_projects)) {
+        $this->needPermission('projects', 'show');
+      }
+
       $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
         'parent_id' => 'nullable|exists:projects,id',

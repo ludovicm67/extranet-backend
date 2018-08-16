@@ -15,7 +15,6 @@ class TagController extends Controller
      */
     public function index()
     {
-      $this->needPermission('projects', 'show');
       return response()->json([
         'success' => true,
         'data' => Tag::all(),
