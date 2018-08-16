@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Expense;
+use App\Leave;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -64,6 +66,18 @@ class RequestController extends Controller
     return response()->json([
       'success' => true,
       'data' => $req->get(),
+    ]);
+  }
+
+  public function pending() {
+    $this->needPermission('request_management', 'edit');
+
+    return response()->json([
+      'success' => true,
+      'data' => [
+        'expenses' => Expense::where('accepted', 0)->with('user')->get(),
+        'leave' => Leave::where('accepted', 0)->with('user')->get(),
+      ],
     ]);
   }
 }

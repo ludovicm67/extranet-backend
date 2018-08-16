@@ -28,6 +28,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
   Route::get('pdf/compta', 'PDFController@compta')->name('pdf.compta');
 
   Route::get('requests', 'RequestController@index')->name('requests.index');
+  Route::get('requests/pending', 'RequestController@pending')->name('requests.pending');
 
   Route::post('leave/{leave}/accept', 'LeaveController@accept')->name('leave.accept');
   Route::post('leave/{leave}/reject', 'LeaveController@reject')->name('leave.reject');
