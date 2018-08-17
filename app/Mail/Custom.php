@@ -2,26 +2,27 @@
 
 namespace App\Mail;
 
-use App\ResetPassword as Pass;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ResetPassword extends Mailable
+class Custom extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $pass;
+    public $title;
+    public $content;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Pass $pass)
+    public function __construct($title = '', $content = '')
     {
-      $this->pass = $pass;
+      $this->title = $title;
+      $this->content = $content;
     }
 
     /**
@@ -32,7 +33,7 @@ class ResetPassword extends Mailable
     public function build()
     {
         return $this
-          ->subject('[EXTRANET] Mot de passe perdu ?')
-          ->markdown('emails.password.reset');
+          ->subject('[EXTRANET] ' . $this->title)
+          ->markdown('emails.custom');
     }
 }

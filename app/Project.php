@@ -53,9 +53,11 @@ class Project extends Model
   }
 
   public function getFavoritedAttribute() {
+    $id = 0;
+    if (isset(auth()->user()->id)) $id = auth()->user()->id;
     $res = ProjectFavorite::where([
         'project_id' => $this->id,
-        'user_id' => auth()->user()->id,
+        'user_id' => $id,
     ])->first();
 
     if (!$res) return false;

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Storage;
 use Validator;
 use App\Expense;
+use App\User;
+use App\Mail\Custom;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
@@ -71,6 +74,22 @@ class ExpenseController extends Controller
         'amount' => $request->amount,
         'type' => $request->type,
       ]);
+
+      // notify admins by mail
+      $user = auth()->user();
+      $userName = $user->firstname . ' ' . $user->lastname . ' (' . $user->email . ')';
+      $emails = User::where('is_admin', 1)->orWhereIn('role_id', function ($query) {
+        $query
+          ->select('role_id')
+          ->from('rights')
+          ->where('name', 'request_management')
+          ->where('edit', 1);
+      })->select('email')->get()->toArray();
+
+      $emails = array_map(function ($e) {
+        return $e['email'];
+      }, $emails);
+      Mail::to($user->email)->send(new Custom('Nouvelle note de frais', 'Une nouvelle note de frais a été déposée par ' . $userName . ' pour le mois ' . $request->month . '/' . $request->year . ".\n\nMotif : " . $request->type . "\n\n" . $request->details));
 
       return response()->json([
         'success' => true,
