@@ -202,6 +202,8 @@ class ExpenseController extends Controller
         'accepted' => 1,
       ]);
 
+      Mail::to($expense->user->email)->send(new Custom('Note de frais acceptée', 'Votre note de frais a été acceptée pour le mois ' . $expense->month . '/' . $expense->year));
+
       return response()->json([
         'success' => true,
       ]);
@@ -213,6 +215,8 @@ class ExpenseController extends Controller
       $expense->update([
         'accepted' => -1,
       ]);
+
+      Mail::to($expense->user->email)->send(new Custom('Note de frais refusée', 'Votre note de frais a été refusée pour le mois ' . $expense->month . '/' . $expense->year));
 
       return response()->json([
         'success' => true,

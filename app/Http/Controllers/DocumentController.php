@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Storage;
 use Validator;
 use App\Document;
+use App\Mail\Custom;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class DocumentController extends Controller
@@ -64,13 +66,22 @@ class DocumentController extends Controller
         $file = str_replace('public/', '', $file->store('public/documents/' . date('Y') . '/' . date('n')));
       }
 
-      Document::create([
+      $doc = Document::create([
         'user_id' => $request->user_id,
         'file' => $file,
         'type' => $type,
         'details' => $request->details,
         'date' => $request->date,
       ]);
+
+      $docType = 'document';
+      if ($type == 'pay') {
+        $docType = 'fiche de paie';
+      } else if ($type == 'medical') {
+        $docType = 'compte-rendu de visite médicale';
+      }
+
+      Mail::to($doc->user->email)->send(new Custom('Dépôt de ' . $docType . ' sur votre compte', "Connectez-vous sur l'extranet et rendez-vous dans la partie «Mon compte» pour consulter le document."));
 
       return response()->json([
         'success' => true,

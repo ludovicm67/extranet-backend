@@ -278,6 +278,8 @@ class LeaveController extends Controller
         'accepted' => 1,
       ]);
 
+      Mail::to($leave->user->email)->send(new Custom('Congés acceptés', 'Votre demande de congés a été acceptée pour la période du ' . $leave->start . ' au ' . $leave->end));
+
       return response()->json([
         'success' => true,
       ]);
@@ -289,6 +291,8 @@ class LeaveController extends Controller
       $leave->update([
         'accepted' => -1,
       ]);
+
+      Mail::to($leave->user->email)->send(new Custom('Congés refusés', 'Votre demande de congés a été refusée pour la période du ' . $leave->start . ' au ' . $leave->end));
 
       return response()->json([
         'success' => true,
