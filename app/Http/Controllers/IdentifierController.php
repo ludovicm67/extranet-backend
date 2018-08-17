@@ -15,6 +15,7 @@ class IdentifierController extends Controller
      */
     public function index()
     {
+      $this->needPermission('identifiers', 'show');
       return response()->json([
         'success' => true,
         'data' => Identifier::all(),
@@ -29,6 +30,7 @@ class IdentifierController extends Controller
      */
     public function store(Request $request)
     {
+      $this->needPermission('identifiers', 'add');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:identifiers',
       ]);
@@ -57,6 +59,7 @@ class IdentifierController extends Controller
      */
     public function show(Identifier $identifier)
     {
+      $this->needPermission('identifiers', 'show');
       return response()->json([
         'success' => true,
         'data' => $identifier
@@ -72,6 +75,7 @@ class IdentifierController extends Controller
      */
     public function update(Request $request, Identifier $identifier)
     {
+      $this->needPermission('identifiers', 'edit');
       $validator = Validator::make($request->all(), [
         'name' => 'required|max:255|unique:identifiers,name,' . $identifier->id,
       ]);
@@ -99,6 +103,8 @@ class IdentifierController extends Controller
      */
     public function destroy(Identifier $identifier)
     {
+      $this->needPermission('identifiers', 'delete');
+
       $identifier->delete();
 
       return response()->json([
