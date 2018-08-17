@@ -23,7 +23,7 @@ class LinkController extends Controller
       return response()->json([
         'success' => true,
         'data' => [
-          'lasts' => Link::orderBy('id', 'desc')->take(10)->get(), // last 10
+          'lasts' => Link::orderBy('id', 'desc')->take(5)->get(), // last 5
           'categories' => LinkCategory::all(), // all categories
         ]
       ]);
