@@ -41,6 +41,8 @@ class LeaveController extends Controller
      */
     public function index()
     {
+      $this->needPermission('leave', 'show');
+
       return response()->json([
         'success' => true,
         'data' => Leave::with('user')->get(),
@@ -130,6 +132,11 @@ class LeaveController extends Controller
      */
     public function show(Leave $leave)
     {
+      $user = auth()->user();
+      if ($leave->user_id != $user->id) {
+        $this->needPermission('leave', 'show');
+      }
+
       return response()->json([
         'success' => true,
         'data' => $leave->fresh(['user']),
@@ -145,6 +152,11 @@ class LeaveController extends Controller
      */
     public function update(Request $request, Leave $leave)
     {
+      $user = auth()->user();
+      if ($leave->user_id != $user->id) {
+        $this->needPermission('leave', 'edit');
+      }
+
       $validator = Validator::make($request->all(), [
         'reason' => 'required|string',
         'file' => 'nullable|file',
@@ -201,6 +213,11 @@ class LeaveController extends Controller
         $days = 0;
       }
 
+      $accepted = 0;
+      if ($user->can('request_management', 'edit')) {
+        $accepted = $leave->accepted;
+      }
+
       $leave->update([
         'file' => $file,
         'details' => $request->details,
@@ -210,6 +227,7 @@ class LeaveController extends Controller
         'end_time' => $request->end_time,
         'reason' => $request->reason,
         'days' => $days,
+        'accepted' => $accepted,
       ]);
 
       return response()->json([

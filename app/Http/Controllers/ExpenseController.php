@@ -24,6 +24,8 @@ class ExpenseController extends Controller
      */
     public function index()
     {
+      $this->needPermission('expenses', 'show');
+
       return response()->json([
         'success' => true,
         'data' => Expense::with('user')->get(),
@@ -83,6 +85,11 @@ class ExpenseController extends Controller
      */
     public function show(Expense $expense)
     {
+      $user = auth()->user();
+      if ($expense->user_id != $user->id) {
+        $this->needPermission('expenses', 'show');
+      }
+
       return response()->json([
         'success' => true,
         'data' => $expense->fresh(['user']),
@@ -98,6 +105,11 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, Expense $expense)
     {
+      $user = auth()->user();
+      if ($expense->user_id != $user->id) {
+        $this->needPermission('expenses', 'edit');
+      }
+
       $validator = Validator::make($request->all(), [
         'type' => 'required|string',
         'month' => 'required|integer|min:1|max:12',
@@ -126,15 +138,20 @@ class ExpenseController extends Controller
         $file = $expense->file;
       }
 
+      $accepted = 0;
+      if ($user->can('request_management', 'edit')) {
+        $accepted = $expense->accepted;
+      }
+
       $expense->update([
         'user_id' => auth()->user()->id,
-        'accepted' => 0,
         'file' => $file,
         'details' => $request->details,
         'year' => $request->year,
         'month' => $request->month,
         'amount' => $request->amount,
         'type' => $request->type,
+        'accepted' => $accepted,
       ]);
 
       return response()->json([

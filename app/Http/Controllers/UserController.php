@@ -30,9 +30,20 @@ class UserController extends Controller
 
     public function team()
     {
+      $data = array_values(User::with(['leave', 'team'])->get()->sortBy('team.id')->toArray());
+
+      $user = auth()->user();
+      if (!$user->can('leave', 'show')) {
+        foreach ($data as $key => $value) {
+          if ($value['id'] != $user->id) {
+            $data[$key]['leave'] = [];
+          }
+        }
+      }
+
       return response()->json([
         'success' => true,
-        'data' => array_values(User::with(['leave', 'team'])->get()->sortBy('team.id')->toArray()),
+        'data' => $data,
       ]);
     }
 
