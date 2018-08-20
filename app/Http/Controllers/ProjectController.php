@@ -308,9 +308,20 @@ class ProjectController extends Controller
     }
 
     public function identifiers(Project $project) {
+      $user = auth()->user();
+      $data = json_decode(json_encode($project->fresh(['identifiers'])));
+      if (!in_array($project->id, $user->user_projects)) {
+        $this->needPermission('projects', 'show');
+        if (!$user->can('project_confidential_identifiers', 'show')) {
+          $data->identifiers = array_filter($data->identifiers, function ($e) {
+            return $e->confidential == 0;
+          });
+        }
+      }
+
       return response()->json([
         'success' => true,
-        'data' => $project->fresh(['identifiers']),
+        'data' => $data,
       ]);
     }
 
@@ -332,11 +343,17 @@ class ProjectController extends Controller
         $identifierId = $identifier->id;
       }
 
+      $confidential = $request->confidential == 1 ? 1 : 0;
+      $user = auth()->user();
+      if (!$user->can('project_confidential_identifiers', 'add')) {
+        $confidential = 0;
+      }
+
       ProjectIdentifier::create([
         'project_id' => $project->id,
         'identifier_id' => $identifierId,
         'value' => $request->value,
-        'confidential' => ($request->confidential == 1 ? 1 : 0),
+        'confidential' => $confidential,
       ]);
 
       return response()->json([
@@ -345,6 +362,15 @@ class ProjectController extends Controller
     }
 
     public function updateIdentifier(Request $request, ProjectIdentifier $project_identifier) {
+      $user = auth()->user();
+      if ($project_identifier->confidential == 1 && !in_array($project_identifier->project_id, $user->user_projects)) {
+        $this->needPermission('project_confidential_identifiers', 'edit');
+      }
+
+      if (!in_array($project_identifier->project_id, $user->user_projects)) {
+        $this->needPermission('projects', 'edit');
+      }
+
       $identifierId = null;
 
       if (!empty($request->identifier_id)) {
@@ -374,6 +400,15 @@ class ProjectController extends Controller
     }
 
     public function deleteIdentifier(ProjectIdentifier $project_identifier) {
+      $user = auth()->user();
+      if ($project_identifier->confidential == 1 && !in_array($project_identifier->project_id, $user->user_projects)) {
+        $this->needPermission('project_confidential_identifiers', 'delete');
+      }
+
+      if (!in_array($project_identifier->project_id, $user->user_projects)) {
+        $this->needPermission('projects', 'delete');
+      }
+
       $project_identifier->delete();
 
       return response()->json([
@@ -382,6 +417,15 @@ class ProjectController extends Controller
     }
 
     public function showIdentifier(ProjectIdentifier $project_identifier) {
+      $user = auth()->user();
+      if ($project_identifier->confidential == 1 && !in_array($project_identifier->project_id, $user->user_projects)) {
+        $this->needPermission('project_confidential_identifiers', 'show');
+      }
+
+      if (!in_array($project_identifier->project_id, $user->user_projects)) {
+        $this->needPermission('projects', 'show');
+      }
+
       return response()->json([
         'success' => true,
         'data' => $project_identifier,
