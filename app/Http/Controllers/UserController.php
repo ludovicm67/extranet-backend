@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-      $this->needPermission('users', 'show');
+      // $this->needPermission('users', 'show');
       return response()->json([
         'success' => true,
         'data' => User::all(),
