@@ -136,7 +136,7 @@ class LeaveController extends Controller
       $emails = array_map(function ($e) {
         return $e['email'];
       }, $emails);
-      Mail::to($user->email)->send(new Custom('Nouvelle demande de congés', 'Une nouvelle demande de congés a été déposée par ' . $userName . ' pour la période du ' . $startDate . ' au ' . $endDate . ".\n\nMotif : " . $request->reason . "\n\n" . $request->details));
+      Mail::to($emails)->send(new Custom('Nouvelle demande de congés', 'Une nouvelle demande de congés a été déposée par ' . $userName . ' pour la période du ' . $startDate . ' au ' . $endDate . ".\n\nMotif : " . $request->reason . "\n\n" . $request->details));
 
       return response()->json([
         'success' => true,

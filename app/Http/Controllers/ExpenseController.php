@@ -89,7 +89,7 @@ class ExpenseController extends Controller
       $emails = array_map(function ($e) {
         return $e['email'];
       }, $emails);
-      Mail::to($user->email)->send(new Custom('Nouvelle note de frais', 'Une nouvelle note de frais a été déposée par ' . $userName . ' pour le mois ' . $request->month . '/' . $request->year . ".\n\nMotif : " . $request->type . "\n\n" . $request->details));
+      Mail::to($emails)->send(new Custom('Nouvelle note de frais', 'Une nouvelle note de frais a été déposée par ' . $userName . ' pour le mois ' . $request->month . '/' . $request->year . ".\n\nMotif : " . $request->type . "\n\n" . $request->details));
 
       return response()->json([
         'success' => true,
