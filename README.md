@@ -45,6 +45,9 @@ différentes migrations :
 php artisan migrate --database=DOMAIN --force
 ```
 
+Si la commande ci-dessus échoue, en général il suffit de la relancer une seconde
+pour que ça fonctionne.
+
 Si la base de données était vide avant le lancement des migrations, un compte
 administrateur sera créé automatiquement. Les identifiants sont les suivants :
 
