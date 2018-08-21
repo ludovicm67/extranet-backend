@@ -32,6 +32,7 @@ class User extends Authenticatable implements JWTSubject
         'default_page',
         'role_id',
         'team_id',
+        'disabled',
     ];
 
     /**
