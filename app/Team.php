@@ -11,5 +11,5 @@ class Team extends Model
   protected static $logFillable = true;
 
   protected $table = 'teams';
-  protected $fillable = ['name'];
+  protected $fillable = ['name', 'color'];
 }

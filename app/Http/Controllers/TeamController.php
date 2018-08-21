@@ -43,8 +43,14 @@ class TeamController extends Controller
         ], 409);
       }
 
+      $color = '#000000';
+      if (!empty($request->color)) {
+        $color = $request->color;
+      }
+
       $team = new Team;
       $team->name = $request->name;
+      $team->color = $color;
       $team->save();
 
       return response()->json([
@@ -88,7 +94,13 @@ class TeamController extends Controller
         ], 409);
       }
 
+      $color = '#000000';
+      if (!empty($request->color)) {
+        $color = $request->color;
+      }
+
       $team->name = $request->name;
+      $team->color = $color;
       $team->save();
 
       return response()->json([
