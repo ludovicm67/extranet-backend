@@ -196,8 +196,13 @@ class ProjectController extends Controller
         }
       }
 
+      if (!$user->can('project', 'show') && !$user->can('clients_details', 'show')) {
+        $fresh = array_diff($fresh, ['orders']);
+      }
+
       $project = json_decode(json_encode($project->fresh($fresh)));
       if (!isset($project->urls)) $project->urls = [];
+      if (!isset($project->orders)) $project->orders = [];
 
       return response()->json([
         'success' => true,
