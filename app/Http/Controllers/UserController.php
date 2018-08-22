@@ -80,6 +80,8 @@ class UserController extends Controller
       $userRoleId = null;
       $userTeamId = null;
 
+      $userDisabled = $request->disabled == 1 ? 1 : 0;
+
       // if user is admin
       if ($request->role_id == -1) {
         $userIsAdmin = 1;
@@ -122,6 +124,7 @@ class UserController extends Controller
         'is_admin' => $userIsAdmin,
         'role_id' => $userRoleId,
         'team_id' => $userTeamId,
+        'disabled' => $userDisabled,
       ]);
 
       return response()->json([
@@ -177,6 +180,11 @@ class UserController extends Controller
           'success' => false,
           'errors' => $validator->errors()->all(),
         ], 400);
+      }
+
+      // a user cannot disable himself
+      if (!$isMe) {
+        $user->disabled = $request->disabled == 1 ? 1 : 0;
       }
 
       // if we need to change the password
