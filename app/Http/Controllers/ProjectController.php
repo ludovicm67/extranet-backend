@@ -220,9 +220,7 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
       $user = auth()->user();
-      if (!in_array($project->id, $user->user_projects)) {
-        $this->needPermission('projects', 'edit');
-      }
+      $this->needPermission('projects', 'edit');
 
       $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
@@ -368,13 +366,11 @@ class ProjectController extends Controller
 
     public function updateIdentifier(Request $request, ProjectIdentifier $project_identifier) {
       $user = auth()->user();
-      if ($project_identifier->confidential == 1 && !in_array($project_identifier->project_id, $user->user_projects)) {
+      if ($project_identifier->confidential == 1) {
         $this->needPermission('project_confidential_identifiers', 'edit');
       }
 
-      if (!in_array($project_identifier->project_id, $user->user_projects)) {
-        $this->needPermission('projects', 'edit');
-      }
+      $this->needPermission('projects', 'edit');
 
       $identifierId = null;
 
