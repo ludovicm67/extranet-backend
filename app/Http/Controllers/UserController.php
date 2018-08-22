@@ -323,6 +323,13 @@ class UserController extends Controller
       // a user with this email exists, so we get it
       $user = User::where('email', $request->email)->first();
 
+      if ($user->disabled == 1) {
+        return response()->json([
+          'success' => false,
+          'message' => 'this user is disabled, you cannot reset it password',
+        ], 403);
+      }
+
       if (empty($request->token)) {
         // we remove all previous entries for this user
         $pass = Pass::where('user_id', $user->id)->delete();
@@ -338,7 +345,7 @@ class UserController extends Controller
 
         return response()->json([
           'success' => true,
-          'message' => 'mail containing the token was send to the user',
+          'message' => 'A mail containing the token has been sent to the user.',
         ]);
       }
 
@@ -362,7 +369,7 @@ class UserController extends Controller
 
       return response()->json([
         'success' => true,
-        'message' => 'new password successfully set, you can now log in.',
+        'message' => 'New password successfully set, you can now log in.',
       ]);
     }
 }
