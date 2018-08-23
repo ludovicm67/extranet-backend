@@ -3,7 +3,7 @@ supported_domains:
   localhost:
     site_name: Extranet
     email_from: noreply@example.com
-    https: false
+    frontend: http://localhost/
     database:
       hostname: localhost
       username: root

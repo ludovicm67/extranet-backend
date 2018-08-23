@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use ludovicm67\SuperDate\Date;
 use Eluceo\iCal\Component\Calendar;
 use Eluceo\iCal\Component\Event;
+use ludovicm67\Laravel\Multidomain\Configuration;
 
 class LeaveController extends Controller
 {
@@ -137,8 +138,18 @@ class LeaveController extends Controller
         return $e['email'];
       }, $emails);
 
+      $config = Configuration::getInstance();
+      $domainConf = $config->getDomain();
+
+      $env = env('APP_ENV');
+      $port = $env == 'local' ? ':3000' : '';
+      $url = '';
+      if (!is_null($domainConf) && !is_null($domainConf->get('frontend'))) {
+        $url = "\n\n\nGérez les différentes demandes depuis : " . rtrim($domainConf->get('frontend'), '/') . $port . '/requests/';
+      }
+
       foreach ($emails as $m) {
-        Mail::to($m)->send(new Custom('Nouvelle demande de congés', 'Une nouvelle demande de congés a été déposée par ' . $userName . ' pour la période du ' . $startDate . ' au ' . $endDate . ".\n\nMotif : " . $request->reason . "\n\n" . $request->details));
+        Mail::to($m)->send(new Custom('Nouvelle demande de congés', 'Une nouvelle demande de congés a été déposée par ' . $userName . ' pour la période du ' . $startDate . ' au ' . $endDate . ".\n\nMotif : " . $request->reason . "\n\n" . $request->details . $url));
       }
 
       return response()->json([

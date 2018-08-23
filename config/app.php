@@ -4,7 +4,7 @@ use \ludovicm67\Laravel\Multidomain\Configuration;
 
 $config = Configuration::getInstance();
 $domainConf = $config->getDomain();
-$appName = 'Gestion';
+$appName = 'Extranet';
 
 if (!is_null($domainConf) && !is_null($domainConf->get('site_name'))) {
     $appName = $domainConf->get('site_name');
@@ -221,7 +221,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class, 
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ],
 

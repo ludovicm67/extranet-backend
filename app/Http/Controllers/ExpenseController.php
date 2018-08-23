@@ -9,6 +9,7 @@ use App\User;
 use App\Mail\Custom;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use ludovicm67\Laravel\Multidomain\Configuration;
 
 class ExpenseController extends Controller
 {
@@ -90,8 +91,18 @@ class ExpenseController extends Controller
         return $e['email'];
       }, $emails);
 
+      $config = Configuration::getInstance();
+      $domainConf = $config->getDomain();
+
+      $env = env('APP_ENV');
+      $port = $env == 'local' ? ':3000' : '';
+      $url = '';
+      if (!is_null($domainConf) && !is_null($domainConf->get('frontend'))) {
+        $url = "\n\n\nGérez les différentes demandes depuis : " . rtrim($domainConf->get('frontend'), '/') . $port . '/requests/';
+      }
+
       foreach ($emails as $m) {
-        Mail::to($m)->send(new Custom('Nouvelle note de frais', 'Une nouvelle note de frais a été déposée par ' . $userName . ' pour le mois ' . $request->month . '/' . $request->year . ".\n\nMotif : " . $request->type . "\n\n" . $request->details));
+        Mail::to($m)->send(new Custom('Nouvelle note de frais', "Une nouvelle note de frais d'un montant de " . number_format($request->amount, 2, ',', ' ') . "€ a été déposée par " . $userName . ' pour le mois ' . $request->month . '/' . $request->year . ".\n\nMotif : " . $request->type . "\n\n" . $request->details . $url));
       }
 
       return response()->json([
