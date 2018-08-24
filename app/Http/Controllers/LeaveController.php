@@ -276,7 +276,10 @@ class LeaveController extends Controller
      */
     public function destroy(Leave $leave)
     {
-      $this->needPermission('leave', 'delete');
+      $user = auth()->user();
+      if (!$user || $leave->user_id != $user->id) {
+        $this->needPermission('leave', 'delete');
+      }
       $this->deleteFile($leave->file);
       $leave->delete();
 

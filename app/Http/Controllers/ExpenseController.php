@@ -200,7 +200,10 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-      $this->needPermission('expenses', 'delete');
+      $user = auth()->user();
+      if (!$user || $expense->user_id != $user->id) {
+        $this->needPermission('expenses', 'delete');
+      }
       $this->deleteFile($expense->file);
       $expense->delete();
 
